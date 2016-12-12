@@ -1,0 +1,8 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+  <file>info.png</file>
+  <file>Logo.jpg</file>
+  <file>hw.png</file>
+  <file>temperature.png</file>
+</qresource>
+</RCC>
