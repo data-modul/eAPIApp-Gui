@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QLabel>
 #include <QVBoxLayout>
+#include <QGroupBox>
 #include <EApi.h>
 
 class boardInfo : public QWidget
@@ -46,6 +47,9 @@ private:
     QLabel *specRevisionValueLabel;
     QHBoxLayout* specRevisionlayout;
     QVBoxLayout *mainLayout;
+
+    QGroupBox *group;
+    QGridLayout *grid;
 };
 
 #endif // BOARDINFO_H

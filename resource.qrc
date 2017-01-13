@@ -3,6 +3,13 @@
   <file>info.png</file>
   <file>Logo.jpg</file>
   <file>hw.png</file>
-  <file>temperature.png</file>
+  <file>whg.png</file>
+  <file>final-justdog-trans.png</file>
+  <file>input-icon.png</file>
+  <file>output-icon.png</file>
+  <file>gpio.png</file>
+  <file>high.png</file>
+  <file>low.png</file>
+  <file>question.png</file>
 </qresource>
 </RCC>

@@ -7,6 +7,8 @@
 #include <QGroupBox>
 #include <EApi.h>
 #include <QTimer>
+#include <QPushButton>
+#include <QLineEdit>
 
 class realtimeInfo: public QWidget
 {
@@ -18,6 +20,9 @@ public:
 
 public slots:
     void timeout();
+    void getBrightnessClicked();
+    void setBrightnessClicked();
+   // void setBrightness(QString text);
 
 private:
     QTimer  *timer;
@@ -67,14 +72,25 @@ private:
     QHBoxLayout* bootRTMlayout;
     QHBoxLayout* runTimeRTMlayout;
 
+    QPushButton *getBrightness;
+    QPushButton *setBrightness;
+    QLabel *currentBrightnessLabel;
+    QLabel *currentBrightnessValue;
+    QLabel *requestedBrightnessLabel;
+    QLineEdit *requestedBrightnessValue;
+    QHBoxLayout* getBrightnesslayout;
+    QHBoxLayout* setBrightnesslayout;
+
     QVBoxLayout *tempLayout;
     QVBoxLayout *voltageLayout;
     QVBoxLayout *rtmLayout;
+    QVBoxLayout *brightnessLayout;
 
     QGroupBox *groupTemp;
     QGroupBox *groupVoltage;
     QGroupBox *groupFan;
     QGroupBox *groupRTM;
+    QGroupBox *groupBrightness;
 
     QGridLayout *grid;
 

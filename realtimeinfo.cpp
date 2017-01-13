@@ -286,6 +286,62 @@ realtimeInfo::realtimeInfo(QWidget *parent)
     groupRTM->setFont(fontlabel);
     groupRTM->setLayout(rtmLayout);
 
+
+    /**************** Backlight ****************************************/
+    getBrightness  = new QPushButton(tr("Get"));
+    getBrightness->setFont(fontvalue);
+    getBrightness->setStyleSheet("color : #143850");
+
+    currentBrightnessLabel  = new QLabel("Current Brightness:");
+    currentBrightnessLabel->setFont(fontvalue);
+    currentBrightnessLabel->setAlignment(Qt::AlignCenter);
+    currentBrightnessLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
+
+    currentBrightnessValue  = new QLabel;
+    currentBrightnessValue->setFont(fontvalue);
+    currentBrightnessValue->setAlignment(Qt::AlignCenter);
+    currentBrightnessValue->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
+
+    requestedBrightnessLabel  = new QLabel("Requested Brightness:");
+    requestedBrightnessLabel->setFont(fontvalue);
+    requestedBrightnessLabel->setAlignment(Qt::AlignCenter);
+    requestedBrightnessLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
+
+    setBrightness  = new QPushButton(tr("Set"));;
+    setBrightness->setFont(fontvalue);
+    setBrightness->setStyleSheet("color : #143850");
+
+    requestedBrightnessValue  = new QLineEdit;
+    requestedBrightnessValue->setFont(fontvalue);
+   // requestedBrightnessValue->setPlaceholderText("test mishavad");
+   // requestedBrightnessValue->setMaximumWidth(150);
+    requestedBrightnessValue->setAlignment(Qt::AlignCenter);
+    requestedBrightnessValue->setStyleSheet("color : #143850");
+
+    connect( getBrightness, SIGNAL( clicked() ), this, SLOT( getBrightnessClicked() ) );
+    connect( setBrightness, SIGNAL( clicked() ), this, SLOT( setBrightnessClicked() ) );
+   // connect(requestedBrightnessValue, SIGNAL(textChanged(QString)), this, SLOT(setBrightness(QString)));
+
+    getBrightnesslayout=new QHBoxLayout;
+    getBrightnesslayout->setSpacing(50);
+    getBrightnesslayout->addWidget(currentBrightnessLabel);
+    getBrightnesslayout->addWidget(currentBrightnessValue);
+    getBrightnesslayout->addWidget(getBrightness);
+
+    setBrightnesslayout=new QHBoxLayout;
+    setBrightnesslayout->setSpacing(50);
+    setBrightnesslayout->addWidget(requestedBrightnessLabel);
+    setBrightnesslayout->addWidget(requestedBrightnessValue);
+    setBrightnesslayout->addWidget(setBrightness);
+
+    brightnessLayout = new QVBoxLayout;
+    brightnessLayout->addLayout(getBrightnesslayout);
+    brightnessLayout->addLayout(setBrightnesslayout);
+
+    groupBrightness = new QGroupBox(tr("Brightness"));
+    groupBrightness->setFont(fontlabel);
+    groupBrightness->setLayout(brightnessLayout);
+
     /********************************************************/
     grid = new QGridLayout;
     grid->setHorizontalSpacing(0);
@@ -294,12 +350,14 @@ realtimeInfo::realtimeInfo(QWidget *parent)
     grid->addWidget(groupVoltage,2,0,1,2);
     grid->addWidget(groupFan,3,0,1,2);
     grid->addWidget(groupRTM,4,0,1,2);
+    grid->addWidget(groupBrightness,5,0,1,2);
     grid->setRowStretch(1,1);
     grid->setRowStretch(2,1);
-     grid->setRowStretch(3,1);
-      grid->setRowStretch(4,1);
-       grid->setRowStretch(5,1);
-        grid->setRowStretch(6,1);
+    grid->setRowStretch(3,1);
+    grid->setRowStretch(4,1);
+    grid->setRowStretch(5,1);
+    grid->setRowStretch(6,1);
+    grid->setRowStretch(7,1);
     setLayout(grid);
 }
 
@@ -401,17 +459,47 @@ void realtimeInfo::fill(void)
     free(pBuffer);
 }
 
+void realtimeInfo::getBrightnessClicked()
+{
+    EApiStatus_t StatusCode = EAPI_STATUS_SUCCESS;
+    uint32_t Value;
+    char  *pBuffer;
+    int pBufferLen = 100;
+
+    pBuffer=(char *)malloc((pBufferLen) * sizeof(char));
+
+    StatusCode=EApiVgaGetBacklightBrightness(EAPI_ID_BACKLIGHT_1, &Value);
+    if(StatusCode == EAPI_STATUS_SUCCESS)
+    {
+        snprintf(pBuffer, pBufferLen,"%u",Value);
+        currentBrightnessValue->setText(pBuffer);
+    }
+    else
+        currentBrightnessValue->setText("Error!");
+}
+void realtimeInfo::setBrightnessClicked()
+{
+    EApiStatus_t StatusCode = EAPI_STATUS_SUCCESS;
+    uint32_t Value;
+
+    Value = requestedBrightnessValue->text().toInt();
+
+    StatusCode=EApiVgaSetBacklightBrightness(EAPI_ID_BACKLIGHT_1, Value );
+    if(StatusCode != EAPI_STATUS_SUCCESS)
+        requestedBrightnessValue->setText("Error!");
+}
+
 void realtimeInfo::timeout()
 {
-fill();
+    fill();
 }
 void realtimeInfo::startTimer(void)
 {
     fill();
-        timer->start(1000);
+    timer->start(1000);
 }
 void realtimeInfo::stopTimer(void)
 {
-        timer->stop();
+    timer->stop();
 }
 

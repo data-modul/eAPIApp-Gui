@@ -6,10 +6,12 @@
 #include "boardinfo.h"
 #include "realtimeinfo.h"
 #include "watchdog.h"
+#include "gpio.h"
 
-#define BOARDINFOTAB 2
+#define BOARDINFOTAB 0
 #define REALTIMEINFOTAB 1
-#define WATCHDOGTAB 0
+#define WATCHDOGTAB 2
+#define GPIOTAB 3
 
 class myTabWidget: public QTabWidget
 {
@@ -24,6 +26,7 @@ private:
     watchdog *mywatchdog;
     realtimeInfo *myrealtimeInfo;
     boardInfo *myboardInfo;
+    gpio *mygpio;
 };
 
 #endif // MYTABWIDGET_H

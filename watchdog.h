@@ -52,9 +52,11 @@ private:
 
     QLabel *output;
     QLabel *outputRemainedTime;
+    QLabel *whgpicture;
 
     QVBoxLayout *modeLayout;
     QVBoxLayout *timeLayout;
+    QVBoxLayout *insideoutputLayout;
 
     QHBoxLayout *outputLayout;
     QHBoxLayout* preTimeoutlayout;
