@@ -9,6 +9,7 @@
 #include <QTimer>
 #include <QPushButton>
 #include <QLineEdit>
+#include <QSlider>
 
 class realtimeInfo: public QWidget
 {
@@ -20,9 +21,7 @@ public:
 
 public slots:
     void timeout();
-    void getBrightnessClicked();
-    void setBrightnessClicked();
-   // void setBrightness(QString text);
+    void sliderValueChanged(int value);
 
 private:
     QTimer  *timer;
@@ -72,14 +71,11 @@ private:
     QHBoxLayout* bootRTMlayout;
     QHBoxLayout* runTimeRTMlayout;
 
-    QPushButton *getBrightness;
-    QPushButton *setBrightness;
-    QLabel *currentBrightnessLabel;
     QLabel *currentBrightnessValue;
-    QLabel *requestedBrightnessLabel;
-    QLineEdit *requestedBrightnessValue;
-    QHBoxLayout* getBrightnesslayout;
-    QHBoxLayout* setBrightnesslayout;
+    QLabel *tick0;
+    QLabel *tick10;
+    QSlider *slider;
+    QGridLayout *gridBrightness;
 
     QVBoxLayout *tempLayout;
     QVBoxLayout *voltageLayout;

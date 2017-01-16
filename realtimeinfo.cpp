@@ -288,59 +288,53 @@ realtimeInfo::realtimeInfo(QWidget *parent)
 
 
     /**************** Backlight ****************************************/
-    getBrightness  = new QPushButton(tr("Get"));
-    getBrightness->setFont(fontvalue);
-    getBrightness->setStyleSheet("color : #143850");
-
-    currentBrightnessLabel  = new QLabel("Current Brightness:");
-    currentBrightnessLabel->setFont(fontvalue);
-    currentBrightnessLabel->setAlignment(Qt::AlignCenter);
-    currentBrightnessLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
 
     currentBrightnessValue  = new QLabel;
     currentBrightnessValue->setFont(fontvalue);
-    currentBrightnessValue->setAlignment(Qt::AlignCenter);
-    currentBrightnessValue->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
+    currentBrightnessValue->setAlignment(Qt::AlignLeft);
+    currentBrightnessValue->setStyleSheet("QLabel { color : #143850 }");
 
-    requestedBrightnessLabel  = new QLabel("Requested Brightness:");
-    requestedBrightnessLabel->setFont(fontvalue);
-    requestedBrightnessLabel->setAlignment(Qt::AlignCenter);
-    requestedBrightnessLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
+    tick0 = new QLabel("0");
+    tick10 = new QLabel("10");
 
-    setBrightness  = new QPushButton(tr("Set"));;
-    setBrightness->setFont(fontvalue);
-    setBrightness->setStyleSheet("color : #143850");
+    slider = new QSlider(Qt::Horizontal);
+    slider->setRange(0,10);
+    slider->setSingleStep(1);
+    slider->setTickInterval(1);
+    slider->setTickPosition(QSlider::TicksBelow);
 
-    requestedBrightnessValue  = new QLineEdit;
-    requestedBrightnessValue->setFont(fontvalue);
-   // requestedBrightnessValue->setPlaceholderText("test mishavad");
-   // requestedBrightnessValue->setMaximumWidth(150);
-    requestedBrightnessValue->setAlignment(Qt::AlignCenter);
-    requestedBrightnessValue->setStyleSheet("color : #143850");
+    connect(slider,SIGNAL(valueChanged(int)),this,SLOT(sliderValueChanged(int)));
 
-    connect( getBrightness, SIGNAL( clicked() ), this, SLOT( getBrightnessClicked() ) );
-    connect( setBrightness, SIGNAL( clicked() ), this, SLOT( setBrightnessClicked() ) );
-   // connect(requestedBrightnessValue, SIGNAL(textChanged(QString)), this, SLOT(setBrightness(QString)));
-
-    getBrightnesslayout=new QHBoxLayout;
-    getBrightnesslayout->setSpacing(50);
-    getBrightnesslayout->addWidget(currentBrightnessLabel);
-    getBrightnesslayout->addWidget(currentBrightnessValue);
-    getBrightnesslayout->addWidget(getBrightness);
-
-    setBrightnesslayout=new QHBoxLayout;
-    setBrightnesslayout->setSpacing(50);
-    setBrightnesslayout->addWidget(requestedBrightnessLabel);
-    setBrightnesslayout->addWidget(requestedBrightnessValue);
-    setBrightnesslayout->addWidget(setBrightness);
+    gridBrightness = new QGridLayout;
+    gridBrightness->addWidget(slider,0,0,1,10);
+    gridBrightness->addWidget(tick0,1,0,1,1);
+    gridBrightness->addWidget(tick10,1,10,1,1);
 
     brightnessLayout = new QVBoxLayout;
-    brightnessLayout->addLayout(getBrightnesslayout);
-    brightnessLayout->addLayout(setBrightnesslayout);
+    brightnessLayout->addWidget(currentBrightnessValue);
+    brightnessLayout->addLayout(gridBrightness);
 
     groupBrightness = new QGroupBox(tr("Brightness"));
     groupBrightness->setFont(fontlabel);
     groupBrightness->setLayout(brightnessLayout);
+
+    EApiStatus_t StatusCode = EAPI_STATUS_SUCCESS;
+    uint32_t Value;
+    char  *pBuffer;
+    int pBufferLen = 100;
+
+    pBuffer=(char *)malloc((pBufferLen) * sizeof(char));
+
+    StatusCode=EApiVgaGetBacklightBrightness(EAPI_ID_BACKLIGHT_1, &Value);
+    if(StatusCode == EAPI_STATUS_SUCCESS)
+    {
+        snprintf(pBuffer, pBufferLen,"Current Brightness is: %u",Value);
+        currentBrightnessValue->setText(pBuffer);
+    }
+    else
+        currentBrightnessValue->setText("Current Brightness is: Error!");
+
+    slider->setValue(Value);
 
     /********************************************************/
     grid = new QGridLayout;
@@ -458,37 +452,31 @@ void realtimeInfo::fill(void)
     }
     free(pBuffer);
 }
-
-void realtimeInfo::getBrightnessClicked()
+void realtimeInfo::sliderValueChanged(int value)
 {
     EApiStatus_t StatusCode = EAPI_STATUS_SUCCESS;
-    uint32_t Value;
-    char  *pBuffer;
-    int pBufferLen = 100;
 
-    pBuffer=(char *)malloc((pBufferLen) * sizeof(char));
-
-    StatusCode=EApiVgaGetBacklightBrightness(EAPI_ID_BACKLIGHT_1, &Value);
-    if(StatusCode == EAPI_STATUS_SUCCESS)
-    {
-        snprintf(pBuffer, pBufferLen,"%u",Value);
-        currentBrightnessValue->setText(pBuffer);
-    }
-    else
-        currentBrightnessValue->setText("Error!");
-}
-void realtimeInfo::setBrightnessClicked()
-{
-    EApiStatus_t StatusCode = EAPI_STATUS_SUCCESS;
-    uint32_t Value;
-
-    Value = requestedBrightnessValue->text().toInt();
-
-    StatusCode=EApiVgaSetBacklightBrightness(EAPI_ID_BACKLIGHT_1, Value );
+    StatusCode=EApiVgaSetBacklightBrightness(EAPI_ID_BACKLIGHT_1, value );
     if(StatusCode != EAPI_STATUS_SUCCESS)
-        requestedBrightnessValue->setText("Error!");
-}
+        currentBrightnessValue->setText("Current Brightness is: Error!");
+    else
+    {
+        uint32_t Value;
+        char  *pBuffer;
+        int pBufferLen = 100;
 
+        pBuffer=(char *)malloc((pBufferLen) * sizeof(char));
+
+        StatusCode=EApiVgaGetBacklightBrightness(EAPI_ID_BACKLIGHT_1, &Value);
+        if(StatusCode == EAPI_STATUS_SUCCESS)
+        {
+            snprintf(pBuffer, pBufferLen,"Current Brightness is: %u",Value);
+            currentBrightnessValue->setText(pBuffer);
+        }
+        else
+            currentBrightnessValue->setText("Current Brightness is: Error!");
+    }
+}
 void realtimeInfo::timeout()
 {
     fill();
