@@ -11,5 +11,6 @@
   <file>high.png</file>
   <file>low.png</file>
   <file>question.png</file>
+  <file>Storage.png</file>
 </qresource>
 </RCC>

@@ -7,11 +7,13 @@
 #include "realtimeinfo.h"
 #include "watchdog.h"
 #include "gpio.h"
+#include "storage.h"
 
 #define BOARDINFOTAB 0
 #define REALTIMEINFOTAB 1
 #define WATCHDOGTAB 2
 #define GPIOTAB 3
+#define STORAGETAB 4
 
 class myTabWidget: public QTabWidget
 {
@@ -27,6 +29,7 @@ private:
     realtimeInfo *myrealtimeInfo;
     boardInfo *myboardInfo;
     gpio *mygpio;
+    storage *mystorage;
 };
 
 #endif // MYTABWIDGET_H
