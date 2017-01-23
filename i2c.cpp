@@ -4,6 +4,8 @@
 #include <qdebug.h>
 #include <EApi.h>
 
+#include <QPainter>
+
 
 i2c::i2c(QWidget *parent)
     :QWidget(parent)
@@ -14,6 +16,8 @@ i2c::i2c(QWidget *parent)
 
     QFont fontvalue;
     fontvalue.setPointSize(11);
+
+    timer = new QTimer(this);
 
     readWriteByteRadioButton = new QRadioButton(tr("Read/Write Register"));
     readWriteByteRadioButton->setFont(fontvalue);
@@ -175,10 +179,17 @@ i2c::i2c(QWidget *parent)
 
     /******************************************************/
     temperatureButton = new QPushButton(tr("Temperature"));
+
+        circlewidget = new CircleWidget;
+        circlewidget->setAntialiased(true);
+        circlewidget->setFloatBased(false);
+
     connect( temperatureButton, SIGNAL( clicked() ), this, SLOT( temperatureClicked() ) );
+    connect(timer, SIGNAL(timeout()), this, SLOT(timeoutTimer()));
 
     demoGrid = new QGridLayout;
     demoGrid->addWidget(temperatureButton,1,0);
+     demoGrid->addWidget(circlewidget, 2, 0);
 
     demoGroup = new QGroupBox(tr("Demo"));
     demoGroup->setFont(fontlabel);
@@ -288,12 +299,27 @@ void i2c::writeClicked()
 }
 void i2c::temperatureClicked()
 {
+    if (!timer->isActive())
+    {
+        temperatureButton->setText("stop");
+        timer->start(1000);
+    }
+    else
+    {
+        temperatureButton->setText("Temperature");
+        timer->stop();
+    }
+}
+void i2c::timeoutTimer()
+{
     unsigned char TmpStrBuf;
     EApiStatus_t StatusCode;
     StatusCode=EApiI2CReadTransfer(base_addr, 0x48, EAPI_I2C_ENC_STD_CMD(0),&TmpStrBuf, 1, 1);
-    printf("temperature: %d\n",TmpStrBuf);
-
+circlewidget->setDiameter((int)TmpStrBuf);
+    update();
 }
+
+
 
 /**************************************/
 struct i2c_adap* i2c::more_adapters(struct i2c_adap *adapters, int n)
@@ -452,3 +478,5 @@ int i2c::find_eeprom(void)
     free_adapters(adapters);
     return result;
 }
+
+

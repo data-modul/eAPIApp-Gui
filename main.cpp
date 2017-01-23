@@ -23,14 +23,16 @@ int main(int argc, char *argv[])
     w->setWindowTitle(QString::fromUtf8("DATA MODUL EAPI Tester"));
    // w->resize(600, 600);
 
-    QWidget *centralWidget = new QWidget(w);
-    myTabWidget *tabs = new myTabWidget(centralWidget);
+  //  QWidget *centralWidget = new QWidget(w);
+    myTabWidget *tabs = new myTabWidget(w);
 tabs->myTabWidgetInitialize();
 
-    w->setCentralWidget(centralWidget);
+    w->setCentralWidget(tabs);
     w->show();
+
     signal(SIGINT, signalhandler);
     const int ret = a.exec();
     EApiLibUnInitialize();
     return ret;
+
 }

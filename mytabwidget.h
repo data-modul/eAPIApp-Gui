@@ -8,12 +8,15 @@
 #include "watchdog.h"
 #include "gpio.h"
 #include "storage.h"
+#include "i2c.h"
+
 
 #define BOARDINFOTAB 0
 #define REALTIMEINFOTAB 1
 #define WATCHDOGTAB 2
 #define GPIOTAB 3
 #define STORAGETAB 4
+#define I2CTAB 5
 
 class myTabWidget: public QTabWidget
 {
@@ -30,6 +33,7 @@ private:
     boardInfo *myboardInfo;
     gpio *mygpio;
     storage *mystorage;
+    i2c *myi2c;
 };
 
 #endif // MYTABWIDGET_H

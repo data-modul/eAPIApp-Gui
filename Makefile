@@ -56,7 +56,8 @@ SOURCES       = main.cpp \
 		mytabwidget.cpp \
 		gpio.cpp \
 		storage.cpp \
-		i2c.cpp qrc_resource.cpp \
+		i2c.cpp \
+		circlewidget.cpp qrc_resource.cpp \
 		moc_mainwindow.cpp \
 		moc_boardinfo.cpp \
 		moc_realtimeinfo.cpp \
@@ -64,7 +65,8 @@ SOURCES       = main.cpp \
 		moc_mytabwidget.cpp \
 		moc_gpio.cpp \
 		moc_storage.cpp \
-		moc_i2c.cpp
+		moc_i2c.cpp \
+		moc_circlewidget.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
 		boardinfo.o \
@@ -74,6 +76,7 @@ OBJECTS       = main.o \
 		gpio.o \
 		storage.o \
 		i2c.o \
+		circlewidget.o \
 		qrc_resource.o \
 		moc_mainwindow.o \
 		moc_boardinfo.o \
@@ -82,7 +85,8 @@ OBJECTS       = main.o \
 		moc_mytabwidget.o \
 		moc_gpio.o \
 		moc_storage.o \
-		moc_i2c.o
+		moc_i2c.o \
+		moc_circlewidget.o
 DIST          = ../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/lib/qt5/mkspecs/features/spec_pre.prf \
 		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/lib/qt5/mkspecs/common/unix.conf \
 		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/lib/qt5/mkspecs/common/linux.conf \
@@ -225,7 +229,8 @@ DIST          = ../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/lib/qt5/m
 		mytabwidget.h \
 		gpio.h \
 		storage.h \
-		i2c.h main.cpp \
+		i2c.h \
+		circlewidget.h main.cpp \
 		mainwindow.cpp \
 		boardinfo.cpp \
 		realtimeinfo.cpp \
@@ -233,7 +238,8 @@ DIST          = ../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/lib/qt5/m
 		mytabwidget.cpp \
 		gpio.cpp \
 		storage.cpp \
-		i2c.cpp
+		i2c.cpp \
+		circlewidget.cpp
 QMAKE_TARGET  = gui-demo
 DESTDIR       = 
 TARGET        = gui-demo
@@ -541,8 +547,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents resource.qrc $(DISTDIR)/
-	$(COPY_FILE) --parents mainwindow.h boardinfo.h realtimeinfo.h watchdog.h mytabwidget.h gpio.h storage.h i2c.h $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp mainwindow.cpp boardinfo.cpp realtimeinfo.cpp watchdog.cpp mytabwidget.cpp gpio.cpp storage.cpp i2c.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents mainwindow.h boardinfo.h realtimeinfo.h watchdog.h mytabwidget.h gpio.h storage.h i2c.h circlewidget.h $(DISTDIR)/
+	$(COPY_FILE) --parents main.cpp mainwindow.cpp boardinfo.cpp realtimeinfo.cpp watchdog.cpp mytabwidget.cpp gpio.cpp storage.cpp i2c.cpp circlewidget.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents mainwindow.ui $(DISTDIR)/
 
 
@@ -584,9 +590,9 @@ qrc_resource.cpp: resource.qrc \
 		info.png
 	/development/sdk-x86-qt5/sysroots/x86_64-pokysdk-linux/usr/bin/qt5/rcc -name resource resource.qrc -o qrc_resource.cpp
 
-compiler_moc_header_make_all: moc_mainwindow.cpp moc_boardinfo.cpp moc_realtimeinfo.cpp moc_watchdog.cpp moc_mytabwidget.cpp moc_gpio.cpp moc_storage.cpp moc_i2c.cpp
+compiler_moc_header_make_all: moc_mainwindow.cpp moc_boardinfo.cpp moc_realtimeinfo.cpp moc_watchdog.cpp moc_mytabwidget.cpp moc_gpio.cpp moc_storage.cpp moc_i2c.cpp moc_circlewidget.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_mainwindow.cpp moc_boardinfo.cpp moc_realtimeinfo.cpp moc_watchdog.cpp moc_mytabwidget.cpp moc_gpio.cpp moc_storage.cpp moc_i2c.cpp
+	-$(DEL_FILE) moc_mainwindow.cpp moc_boardinfo.cpp moc_realtimeinfo.cpp moc_watchdog.cpp moc_mytabwidget.cpp moc_gpio.cpp moc_storage.cpp moc_i2c.cpp moc_circlewidget.cpp
 moc_mainwindow.cpp: ../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/QMainWindow \
 		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qmainwindow.h \
 		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qwidget.h \
@@ -1254,6 +1260,7 @@ moc_mytabwidget.cpp: ../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/incl
 		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qtabbar.h \
 		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qrubberband.h \
 		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qabstractitemmodel.h \
+		circlewidget.h \
 		mytabwidget.h
 	/development/sdk-x86-qt5/sysroots/x86_64-pokysdk-linux/usr/bin/qt5/moc $(DEFINES) -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/lib/qt5/mkspecs/linux-oe-g++ -I/development/eAPI/gui-demo-2/gui-demo -I/development/eAPI/gui-demo-2/gui-demo/include -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5 -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/c++/4.9.3 -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/c++/4.9.3/x86_64-poky-linux -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/c++/4.9.3/backward -I/development/sdk-x86-qt5/sysroots/x86_64-pokysdk-linux/lib/x86_64-poky-linux/gcc/x86_64-poky-linux/4.9.3/include -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/lib/gcc/x86_64-poky-linux/4.9.3/include -I/development/sdk-x86-qt5/sysroots/x86_64-pokysdk-linux/lib/x86_64-poky-linux/gcc/x86_64-poky-linux/4.9.3/include-fixed -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include mytabwidget.h -o moc_mytabwidget.cpp
 
@@ -1664,8 +1671,116 @@ moc_i2c.cpp: ../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/
 		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qtabwidget.h \
 		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qrubberband.h \
 		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qabstractitemmodel.h \
+		circlewidget.h \
 		i2c.h
 	/development/sdk-x86-qt5/sysroots/x86_64-pokysdk-linux/usr/bin/qt5/moc $(DEFINES) -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/lib/qt5/mkspecs/linux-oe-g++ -I/development/eAPI/gui-demo-2/gui-demo -I/development/eAPI/gui-demo-2/gui-demo/include -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5 -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/c++/4.9.3 -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/c++/4.9.3/x86_64-poky-linux -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/c++/4.9.3/backward -I/development/sdk-x86-qt5/sysroots/x86_64-pokysdk-linux/lib/x86_64-poky-linux/gcc/x86_64-poky-linux/4.9.3/include -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/lib/gcc/x86_64-poky-linux/4.9.3/include -I/development/sdk-x86-qt5/sysroots/x86_64-pokysdk-linux/lib/x86_64-poky-linux/gcc/x86_64-poky-linux/4.9.3/include-fixed -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include i2c.h -o moc_i2c.cpp
+
+moc_circlewidget.cpp: ../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/QWidget \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qwidget.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qwindowdefs.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qglobal.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qconfig.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qfeatures.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qsystemdetection.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qprocessordetection.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qcompilerdetection.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qtypeinfo.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qtypetraits.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qisenum.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qsysinfo.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qlogging.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qflags.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qatomic.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qbasicatomic.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qatomic_bootstrap.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qgenericatomic.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qatomic_cxx11.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qatomic_gcc.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qatomic_msvc.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qatomic_armv7.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qatomic_armv6.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qatomic_armv5.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qatomic_ia64.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qatomic_x86.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qatomic_unix.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qglobalstatic.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qmutex.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qnumeric.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qversiontagging.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qobjectdefs.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qnamespace.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qobjectdefs_impl.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qwindowdefs_win.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qobject.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qstring.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qchar.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qbytearray.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qrefcount.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qarraydata.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qstringbuilder.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qlist.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qalgorithms.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qiterator.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qhashfunctions.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qpair.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qbytearraylist.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qstringlist.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qregexp.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qstringmatcher.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qcoreevent.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qscopedpointer.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qmetatype.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qvarlengtharray.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qcontainerfwd.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qobject_impl.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qmargins.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qpaintdevice.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qrect.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qsize.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qpoint.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qpalette.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qcolor.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qrgb.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qrgba64.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qbrush.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qvector.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qmatrix.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qpolygon.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qregion.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qdatastream.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qiodevice.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qline.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qtransform.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qpainterpath.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qimage.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qpixelformat.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qpixmap.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qsharedpointer.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qshareddata.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qhash.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qsharedpointer_impl.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qfont.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qfontmetrics.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qfontinfo.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qsizepolicy.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qcursor.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qkeysequence.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qevent.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qvariant.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qmap.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qdebug.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qtextstream.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qlocale.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qset.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qcontiguouscache.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qurl.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qurlquery.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qfile.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qfiledevice.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qvector2d.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qtouchdevice.h \
+		circlewidget.h
+	/development/sdk-x86-qt5/sysroots/x86_64-pokysdk-linux/usr/bin/qt5/moc $(DEFINES) -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/lib/qt5/mkspecs/linux-oe-g++ -I/development/eAPI/gui-demo-2/gui-demo -I/development/eAPI/gui-demo-2/gui-demo/include -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5 -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/c++/4.9.3 -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/c++/4.9.3/x86_64-poky-linux -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/c++/4.9.3/backward -I/development/sdk-x86-qt5/sysroots/x86_64-pokysdk-linux/lib/x86_64-poky-linux/gcc/x86_64-poky-linux/4.9.3/include -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/lib/gcc/x86_64-poky-linux/4.9.3/include -I/development/sdk-x86-qt5/sysroots/x86_64-pokysdk-linux/lib/x86_64-poky-linux/gcc/x86_64-poky-linux/4.9.3/include-fixed -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include circlewidget.h -o moc_circlewidget.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -1858,7 +1973,8 @@ main.o: main.cpp ../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/
 		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qstyle.h \
 		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qtabbar.h \
 		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qrubberband.h \
-		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qabstractitemmodel.h
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qabstractitemmodel.h \
+		circlewidget.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 mainwindow.o: mainwindow.cpp mainwindow.h \
@@ -1969,7 +2085,45 @@ mainwindow.o: mainwindow.cpp mainwindow.h \
 		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qtouchdevice.h \
 		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qtabwidget.h \
 		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qicon.h \
-		ui_mainwindow.h
+		ui_mainwindow.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/QVariant \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/QAction \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qaction.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qactiongroup.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/QApplication \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qapplication.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qcoreapplication.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qeventloop.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qdesktopwidget.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qguiapplication.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qinputmethod.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/QButtonGroup \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qbuttongroup.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/QHeaderView \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qheaderview.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qabstractitemview.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qabstractscrollarea.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qframe.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qabstractitemmodel.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qitemselectionmodel.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qabstractitemdelegate.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qstyleoption.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qabstractspinbox.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qvalidator.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qregularexpression.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qslider.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qabstractslider.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qstyle.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qtabbar.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qrubberband.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/QMenuBar \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qmenubar.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qmenu.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/QStatusBar \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qstatusbar.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/QToolBar \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qtoolbar.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/QWidget
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o mainwindow.cpp
 
 boardinfo.o: boardinfo.cpp boardinfo.h \
@@ -2532,7 +2686,8 @@ mytabwidget.o: mytabwidget.cpp mytabwidget.h \
 		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qstyle.h \
 		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qtabbar.h \
 		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qrubberband.h \
-		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qabstractitemmodel.h
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qabstractitemmodel.h \
+		circlewidget.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mytabwidget.o mytabwidget.cpp
 
 gpio.o: gpio.cpp gpio.h \
@@ -2949,10 +3104,124 @@ i2c.o: i2c.cpp i2c.h \
 		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qtabwidget.h \
 		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qrubberband.h \
 		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qabstractitemmodel.h \
+		circlewidget.h \
 		include/EApi.h \
 		include/EApiCOM0.h \
-		include/EApiDmo.h
+		include/EApiDmo.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/QPainter \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qpainter.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o i2c.o i2c.cpp
+
+circlewidget.o: circlewidget.cpp circlewidget.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/QWidget \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qwidget.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qwindowdefs.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qglobal.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qconfig.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qfeatures.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qsystemdetection.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qprocessordetection.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qcompilerdetection.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qtypeinfo.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qtypetraits.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qisenum.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qsysinfo.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qlogging.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qflags.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qatomic.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qbasicatomic.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qatomic_bootstrap.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qgenericatomic.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qatomic_cxx11.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qatomic_gcc.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qatomic_msvc.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qatomic_armv7.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qatomic_armv6.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qatomic_armv5.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qatomic_ia64.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qatomic_x86.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qatomic_unix.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qglobalstatic.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qmutex.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qnumeric.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qversiontagging.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qobjectdefs.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qnamespace.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qobjectdefs_impl.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qwindowdefs_win.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qobject.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qstring.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qchar.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qbytearray.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qrefcount.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qarraydata.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qstringbuilder.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qlist.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qalgorithms.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qiterator.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qhashfunctions.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qpair.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qbytearraylist.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qstringlist.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qregexp.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qstringmatcher.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qcoreevent.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qscopedpointer.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qmetatype.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qvarlengtharray.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qcontainerfwd.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qobject_impl.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qmargins.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qpaintdevice.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qrect.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qsize.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qpoint.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qpalette.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qcolor.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qrgb.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qrgba64.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qbrush.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qvector.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qmatrix.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qpolygon.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qregion.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qdatastream.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qiodevice.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qline.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qtransform.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qpainterpath.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qimage.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qpixelformat.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qpixmap.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qsharedpointer.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qshareddata.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qhash.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qsharedpointer_impl.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qfont.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qfontmetrics.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qfontinfo.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qsizepolicy.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qcursor.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qkeysequence.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qevent.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qvariant.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qmap.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qdebug.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qtextstream.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qlocale.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qset.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qcontiguouscache.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qurl.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qurlquery.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qfile.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qfiledevice.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qvector2d.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qtouchdevice.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/QPainter \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qpainter.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qtextoption.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qpen.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o circlewidget.o circlewidget.cpp
 
 qrc_resource.o: qrc_resource.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_resource.o qrc_resource.cpp
@@ -2980,6 +3249,9 @@ moc_storage.o: moc_storage.cpp
 
 moc_i2c.o: moc_i2c.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_i2c.o moc_i2c.cpp
+
+moc_circlewidget.o: moc_circlewidget.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_circlewidget.o moc_circlewidget.cpp
 
 ####### Install
 

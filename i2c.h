@@ -11,6 +11,8 @@
 #include <QTextEdit>
 #include <QRadioButton>
 #include <QComboBox>
+#include <QTimer>
+#include "circlewidget.h"
 
 struct i2c_adap {
     int nr;
@@ -36,6 +38,7 @@ public slots:
     void temperatureClicked();
     void offsetChanged(QString text);
     void lengthChanged(QString text);
+    void timeoutTimer();
 
     void readWriteByteRadioButtonClicked(bool checked);
     void readWriteBlockRadioButtonClicked(bool checked);
@@ -99,6 +102,10 @@ private:
 
 
     QGridLayout *grid;
+
+    CircleWidget *circlewidget;
+    QTimer *timer;
+
 };
 
 #endif // I2C_H
