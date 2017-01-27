@@ -9,8 +9,7 @@ CircleWidget::CircleWidget(QWidget *parent)
 {
     floatBased = false;
     antialiased = false;
-    frameNo = 0;
-
+diameter = 0;
     setBackgroundRole(QPalette::Base);
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
@@ -39,40 +38,65 @@ QSize CircleWidget::sizeHint() const
 
 void CircleWidget::nextAnimationFrame()
 {
-    // ++frameNo;
     update();
 }
 void CircleWidget::setDiameter(int d)
 {
     diameter = d;
-
 }
-
 void CircleWidget::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing, antialiased);
     painter.translate(width() / 2, height() / 2);
 
-    //  for (int diameter = 0; diameter < 256; diameter += 9) {
+    QPen pen;
+    QFont font;
+    font.setPixelSize(12);
 
-  //  int alpha = 200;// - (delta * delta) / 4 - diameter;
+    int hscale = (height() - 40) / 100;
+    int wscale = width() / 100;
+    if(wscale > 1)
+        wscale = 1;
 
-        //painter.setPen(QPen(QColor(0, diameter / 2, 127, alpha), 3));
-        painter.setPen(Qt::NoPen);
-        QRadialGradient gradient(QPointF(0, 0), 50);
-        gradient.setColorAt(0, Qt::blue);
-        gradient.setColorAt(1, Qt::red);
-        painter.setBrush(gradient);
+    int lowOffset = 20;
+    int leftoffset = 10;
+    int leftTickOffest = leftoffset + 5;
+    int widthMaintick = 6;
+    int widthMinortick =  widthMaintick / 2;
 
-     // painter.drawEllipse(QRect(-diameter / 2, -diameter / 2, diameter, diameter));
+    painter.setPen(Qt::NoPen);
+    if (diameter < 10 )
+        painter.setBrush(Qt::blue);
+    else if (diameter < 50 )
+        painter.setBrush(Qt::darkMagenta);
+    else
+        painter.setBrush(Qt::red);
 
-        painter.drawRoundRect(QRect(-25,0, 50, -diameter));
-        painter.setPen(QPen(QColor(0, diameter / 2, 127, 255), 3));
+    painter.drawRect(QRect(-leftoffset*wscale,50*hscale  , 20*wscale, -(diameter*hscale)));
 
-        char temp[30];
-        sprintf(temp,"%d °C",diameter);
-        painter.drawText(-15,20,temp);
+        pen.setWidthF(0.5);
+        pen.setColor(Qt::gray);
+        painter.setPen(pen);
+        painter.setFont(font);
 
-    // }
+        for (int i =0 ; i <= 100 ; i++)
+        {
+            if (i % 10 == 0)
+            {
+                painter.drawLine(-leftTickOffest*wscale, (50 - i )*hscale , -(leftTickOffest + widthMaintick)*wscale, (50 - i )*hscale );
+                QRect rect = QRect(-45*wscale, (50 - i )*hscale - (lowOffset/2), 20, 20);
+                painter.drawText(rect,Qt::AlignRight , QString::number(i));
+            }
+            else if (i % 2 == 0)
+            {
+                painter.drawLine(-leftTickOffest*wscale, (50 - i )*hscale , -(leftTickOffest + widthMinortick)*wscale, (50 - i )*hscale );
+            }
+        }
+
+    char temp[30];
+    sprintf(temp,"%d °C",diameter);
+    font.setPixelSize(14);
+    painter.setFont(font);
+    painter.drawText(-leftTickOffest*wscale,50*hscale +15 ,temp);
 }

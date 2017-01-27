@@ -12,6 +12,9 @@
 #include <QRadioButton>
 #include <QComboBox>
 #include <QTimer>
+#include <QCheckBox>
+#include <QPlainTextEdit>
+
 #include "circlewidget.h"
 
 struct i2c_adap {
@@ -32,12 +35,16 @@ public:
     struct i2c_adap* gather_i2c_busses(void);
     struct i2c_adap* more_adapters(struct i2c_adap *adapters, int n);
 
+
 public slots:
     void readClicked();
     void writeClicked();
+    void writereadClicked();
     void temperatureClicked();
+    void timingSelected(bool checked);
     void offsetChanged(QString text);
-    void lengthChanged(QString text);
+    void readlengthChanged(QString text);
+    void writelengthChanged(QString text);
     void timeoutTimer();
 
     void readWriteByteRadioButtonClicked(bool checked);
@@ -47,15 +54,18 @@ public slots:
     void wordRadioButtonClicked(bool checked);
     void handleI2CselectionChanged(int index);
     void slaveChanged(QString text);
+    void getInput();
 
 private:
     uint32_t offset;
-    uint32_t length;
+    uint32_t readlength;
+    uint32_t writelength;
     int protocol;
     uint32_t i2cBus;
     uint32_t base_addr;
     uint32_t slave;
     unsigned int offsetType; /*0: byte, 1:word */
+    bool timing;
 
     QRadioButton *readWriteByteRadioButton;
     QRadioButton *readWriteBlockRadioButton;
@@ -82,8 +92,13 @@ private:
     QRadioButton *byteRadioButton;
     QRadioButton *wordRadioButton;
 
-    QLabel *lengthLabel;
-    QLineEdit *lengthValue;
+    QLabel *readlengthLabel;
+    QLineEdit *readlengthValue;
+
+    QLabel *writelengthLabel;
+    QLineEdit *writelengthValue;
+
+    QCheckBox *timingCheckbox;
 
     QLabel *writeLabel;
     QTextEdit *writeValue;
@@ -93,6 +108,7 @@ private:
 
     QPushButton *readButton;
     QPushButton *writeButton;
+    QPushButton *writereadCombineButton;
 
     QGroupBox *controlGroup;
 
@@ -105,6 +121,9 @@ private:
 
     CircleWidget *circlewidget;
     QTimer *timer;
+
+    QString input;
+
 
 };
 

@@ -27,7 +27,6 @@ protected:
 private:
     bool floatBased;
     bool antialiased;
-    int frameNo;
     int diameter;
 };
 

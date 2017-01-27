@@ -3,7 +3,7 @@
 #include <fcntl.h>
 #include <qdebug.h>
 #include <EApi.h>
-
+#include  <unistd.h>
 #include <QPainter>
 
 
@@ -23,16 +23,16 @@ i2c::i2c(QWidget *parent)
     readWriteByteRadioButton->setFont(fontvalue);
     readWriteByteRadioButton->setStyleSheet("QLabel { color : black; }");
 
-    readWriteBlockRadioButton = new QRadioButton(tr("Read/Write Block"));
+    readWriteBlockRadioButton = new QRadioButton(tr("Read/Write Block(Continuous)"));
     readWriteBlockRadioButton->setFont(fontvalue);
     readWriteBlockRadioButton->setStyleSheet("QLabel { color : black; }");
 
-    readWriteCombineRadioButton = new QRadioButton(tr("Read/Write Combine"));
+    readWriteCombineRadioButton = new QRadioButton(tr("Write Read Raw"));
     readWriteCombineRadioButton->setFont(fontvalue);
     readWriteCombineRadioButton->setStyleSheet("QLabel { color : black; }");
 
     readWriteByteRadioButton->setChecked(1);
-    protocol = 0; /*0: register, 1:block, 2:combine */
+    protocol = 0; /*0: register, 1:block, 2:raw */
 
     connect( readWriteByteRadioButton, SIGNAL( toggled(bool) ), this, SLOT( readWriteByteRadioButtonClicked(bool) ) );
     connect( readWriteBlockRadioButton, SIGNAL( toggled(bool) ), this, SLOT( readWriteBlockRadioButtonClicked(bool) ) );
@@ -130,35 +130,58 @@ i2c::i2c(QWidget *parent)
     parameterGrid->addWidget(byteRadioButton,2,3);
     parameterGrid->addWidget(wordRadioButton,2,4);
 
-    lengthLabel = new QLabel;
-    lengthLabel->setText("Length");
+    readlengthLabel = new QLabel;
+    readlengthLabel->setText("Read Length");
 
-    lengthValue = new QLineEdit("0");
-    lengthValue->setStyleSheet("QLabel { color : black; }");
-    lengthValue->setFont(fontvalue);
+    readlengthValue = new QLineEdit("0");
+    readlengthValue->setStyleSheet("QLabel { color : black; }");
+    readlengthValue->setFont(fontvalue);
 
-    connect(lengthValue, SIGNAL(textChanged(QString)), this, SLOT(lengthChanged(QString)));
-    length = 0;
+    connect(readlengthValue, SIGNAL(textChanged(QString)), this, SLOT(readlengthChanged(QString)));
+    readlength = 0;
 
-    parameterGrid->addWidget(lengthLabel,3,0);
-    parameterGrid->addWidget(lengthValue,3,1);
+    parameterGrid->addWidget(readlengthLabel,3,0);
+    parameterGrid->addWidget(readlengthValue,3,1);
 
-    writeLabel = new QLabel("Write:");
+
+    writelengthLabel = new QLabel;
+    writelengthLabel->setText("Write Length");
+
+    writelengthValue = new QLineEdit("0");
+    writelengthValue->setStyleSheet("QLabel { color : black; }");
+    writelengthValue->setFont(fontvalue);
+
+    connect(writelengthValue, SIGNAL(textChanged(QString)), this, SLOT(writelengthChanged(QString)));
+    writelength = 0;
+
+    parameterGrid->addWidget(writelengthLabel,3,2);
+    parameterGrid->addWidget(writelengthValue,3,3);
+
+    timingCheckbox = new QCheckBox("timing");
+    parameterGrid->addWidget(timingCheckbox,3,4);
+    timingCheckbox->setChecked(false);
+    timing = false;
+    connect(timingCheckbox, SIGNAL(clicked(bool)), this, SLOT(timingSelected(bool)));
+
+    writeLabel = new QLabel("Write(Hex):");
 
     writeValue = new QTextEdit;
     writeValue->setFont(fontvalue);
     writeValue->setStyleSheet("QLabel { color : black; }");
+    connect(writeValue, SIGNAL(textChanged()), this, SLOT(getInput()));
 
     writeButton = new QPushButton(tr("Write"));
     connect( writeButton, SIGNAL( clicked() ), this, SLOT( writeClicked() ) );
 
-    writeButton->setEnabled(false);
+    writereadCombineButton = new QPushButton(tr("WriteRead Combined"));
+    connect( writereadCombineButton, SIGNAL( clicked() ), this, SLOT( writereadClicked() ) );
+    writereadCombineButton->setEnabled(false);
 
     parameterGrid->addWidget(writeLabel,4,0);
     parameterGrid->addWidget(writeValue,5,0,1,4);
     parameterGrid->addWidget(writeButton,5,4);
 
-    readLabel = new QLabel("Read:");
+    readLabel = new QLabel("Read(Hex):");
 
     readValue = new QTextEdit();
     readValue->setFont(fontvalue);
@@ -170,6 +193,7 @@ i2c::i2c(QWidget *parent)
     connect( readButton, SIGNAL( clicked() ), this, SLOT( readClicked() ) );
 
     parameterGrid->addWidget(readLabel,6,0);
+    parameterGrid->addWidget(writereadCombineButton,6,4);
     parameterGrid->addWidget(readValue,7,0,1,4);
     parameterGrid->addWidget(readButton,7,4);
 
@@ -180,16 +204,16 @@ i2c::i2c(QWidget *parent)
     /******************************************************/
     temperatureButton = new QPushButton(tr("Temperature"));
 
-        circlewidget = new CircleWidget;
-        circlewidget->setAntialiased(true);
-        circlewidget->setFloatBased(false);
+    circlewidget = new CircleWidget;
+    circlewidget->setAntialiased(true);
+    circlewidget->setFloatBased(false);
 
     connect( temperatureButton, SIGNAL( clicked() ), this, SLOT( temperatureClicked() ) );
     connect(timer, SIGNAL(timeout()), this, SLOT(timeoutTimer()));
 
     demoGrid = new QGridLayout;
     demoGrid->addWidget(temperatureButton,1,0);
-     demoGrid->addWidget(circlewidget, 2, 0);
+    demoGrid->addWidget(circlewidget, 2, 0);
 
     demoGroup = new QGroupBox(tr("Demo"));
     demoGroup->setFont(fontlabel);
@@ -205,17 +229,37 @@ i2c::i2c(QWidget *parent)
 void i2c::readWriteByteRadioButtonClicked(bool checked)
 {
     if(checked)
+    {
         protocol  = 0;
+        readButton->setEnabled(true);
+        writeButton->setEnabled(true);
+        writereadCombineButton->setEnabled(false);
+    }
 }
 void i2c::readWriteBlockRadioButtonClicked(bool checked)
 {
     if(checked)
+    {
         protocol  = 1;
+        readButton->setEnabled(true);
+        writeButton->setEnabled(true);
+        writereadCombineButton->setEnabled(false);
+    }
 }
 void i2c::readWriteCombineRadioButtonClicked(bool checked)
 {
     if(checked)
+    {
         protocol  = 2;
+        readButton->setEnabled(false);
+        writeButton->setEnabled(false);
+        writereadCombineButton->setEnabled(true);
+    }
+}
+void i2c::timingSelected(bool checked)
+{
+    if(checked)
+        timing = true;
 }
 void i2c::handleI2CselectionChanged(int index)
 {
@@ -229,9 +273,13 @@ void i2c::offsetChanged(QString text)
 {
     offset = text.toInt();
 }
-void i2c::lengthChanged(QString text)
+void i2c::readlengthChanged(QString text)
 {
-    length = text.toInt();
+    readlength = text.toInt();
+}
+void i2c::writelengthChanged(QString text)
+{
+    writelength = text.toInt();
 }
 void i2c::byteRadioButtonClicked(bool checked)
 {
@@ -246,33 +294,68 @@ void i2c::wordRadioButtonClicked(bool checked)
 void i2c::readClicked()
 {
     unsigned char *TmpStrBuf;
-    EApiStatus_t StatusCode;
+    EApiStatus_t StatusCode = EAPI_STATUS_SUCCESS;
+    int tempLength;
 
-    TmpStrBuf = (unsigned char*) malloc(sizeof(unsigned char)*(length+1));
-
-    if (offsetType == 1)
-        StatusCode=EApiI2CReadTransfer(i2cBus, slave, EAPI_I2C_ENC_EXT_CMD(offset),TmpStrBuf, length, length);
+    if (protocol == 0) //read byte
+    {
+        TmpStrBuf = (unsigned char*) malloc(sizeof(unsigned char)*(1+1));
+        tempLength = 1;
+    }
     else
-        StatusCode=EApiI2CReadTransfer(i2cBus, slave, EAPI_I2C_ENC_STD_CMD(offset),TmpStrBuf, length, length);
+    {
+        TmpStrBuf = (unsigned char*) malloc(sizeof(unsigned char)*(readlength+1));
+        tempLength = readlength;
+    }
 
-    //  for (int i =0; i < length ; i++)
-    //       printf("%d: %x\n",i,TmpStrBuf[i]);
+    int index = 0;
+    while (tempLength)
+    {
+        if (tempLength < 32)
+        {
+
+            if (offsetType == 1)
+                StatusCode=EApiI2CReadTransfer(i2cBus, slave, EAPI_I2C_ENC_EXT_CMD(offset+index),TmpStrBuf + index, tempLength, tempLength);
+            else
+                StatusCode=EApiI2CReadTransfer(i2cBus, slave, EAPI_I2C_ENC_STD_CMD(offset+index),TmpStrBuf + index, tempLength, tempLength);
+            tempLength = 0;
+        }
+        else
+        {
+            if (offsetType == 1)
+                StatusCode=EApiI2CReadTransfer(i2cBus, slave, EAPI_I2C_ENC_EXT_CMD(offset+index),TmpStrBuf + index, 32, 32);
+            else
+                StatusCode=EApiI2CReadTransfer(i2cBus, slave, EAPI_I2C_ENC_STD_CMD(offset+index),TmpStrBuf + index, 32, 32);
+
+            tempLength -= 32;
+            index += 32;
+        }
+    }
 
     if(EAPI_TEST_SUCCESS(StatusCode))
     {
-        QString tmp=QString::fromLocal8Bit((char*)TmpStrBuf, length);
-        // QByteArray tmp2 = QByteArray::fromRawData((char*)TmpStrBuf,length); tmp2.tohex
-        QString tmp3;
-        int i =0;
+        if (protocol == 0) //read byte
+            tempLength = 1;
+        else
+            tempLength = readlength;
 
-        for (i =0 ; i< tmp.size(); i++)
-        {
-            if (tmp.at(i).toLatin1() > 32)
-                tmp3.append(tmp.at(i).toLatin1());
+        QString tokens;
+        for(int i = 0; i < tempLength ;i ++) {
+            uint8_t value = TmpStrBuf[i] / 16;
+            if (value ==0 || value <=9)
+                tokens.append(48+value);
             else
-                tmp3.append(" ");
+                tokens.append(65+(value%10));
+
+            value = TmpStrBuf[i] % 16;
+            if (value ==0 || value <=9)
+                tokens.append(48+value);
+            else
+                tokens.append(65+(value%10));
+
+            tokens.append(" ");
         }
-        readValue->setText(tmp3);
+        readValue->setText(tokens);
     }
     else
         readValue->setText("Error!");
@@ -281,21 +364,182 @@ void i2c::readClicked()
 }
 void i2c::writeClicked()
 {
-    char *str;
-    QString inputstr;
-    QByteArray bytestr;
-    inputstr = writeValue->toPlainText().toStdString().data();
-    bytestr = inputstr.toLatin1();
-    str = bytestr.data();
-    uint32_t size = strlen(str);
+    unsigned int size = 0;
+    uint8_t *writestr;
+    unsigned int originsize;
+    unsigned int i = 0 , j =0;
+    char hex[2];
+    uint8_t num;
 
-    EApiStatus_t StatusCode;
-    StatusCode=EApiStorageAreaWrite(EAPI_ID_STORAGE_STD,offset,str,size);
+    EApiStatus_t StatusCode = EAPI_STATUS_SUCCESS;
+
+    originsize = input.size();
+
+    if (originsize % 2 == 0)
+        size = originsize / 2 ;
+    else
+        size = (originsize /2) + 1;
+
+    writestr = (uint8_t*) malloc(sizeof(uint8_t)*(size));
+
+    j = 0;
+    for (i = 0; i < originsize ; i+=2)
+    {
+        if (((i+1) == originsize) && (originsize % 2 != 0))
+        {
+            hex[0] = (char)'0';
+            hex[1] = input.at(i).toLatin1();
+        }
+        else
+        {
+            hex[0] = input.at(i).toLatin1();
+            hex[1] = input.at(i+1).toLatin1();
+        }
+
+        num = (int)strtol(hex, NULL, 16);
+        if (j < size)
+        {
+            writestr[j] = num;
+            j++;
+        }
+    }
+
+     int tempLength = size;
+
+    if (protocol == 0 && size > 0) //write byte
+    {
+        tempLength = 1;
+    }
+    else
+    {
+        if (writelength > size)
+            tempLength = size;
+        else
+            tempLength = writelength;
+    }
+
+    int index = 0;
+    while (tempLength)
+    {
+        if (timing) // write one byte
+        {
+            if (offsetType == 1)
+                StatusCode=EApiI2CWriteTransfer(i2cBus, slave, EAPI_I2C_ENC_EXT_CMD(offset+index),writestr + index, 1);
+            else
+                StatusCode=EApiI2CWriteTransfer(i2cBus, slave, EAPI_I2C_ENC_STD_CMD(offset+index),writestr + index, 1);
+            tempLength--;
+            index++;
+            usleep(5000);
+        }
+        else if (tempLength < 32)
+        {
+
+            if (offsetType == 1)
+                StatusCode=EApiI2CWriteTransfer(i2cBus, slave, EAPI_I2C_ENC_EXT_CMD(offset+index),writestr + index, tempLength);
+            else
+                StatusCode=EApiI2CWriteTransfer(i2cBus, slave, EAPI_I2C_ENC_STD_CMD(offset+index),writestr + index, tempLength);
+            tempLength = 0;
+        }
+        else
+        {
+            if (offsetType == 1)
+                StatusCode=EApiI2CWriteTransfer(i2cBus, slave, EAPI_I2C_ENC_EXT_CMD(offset+index),writestr + index, 32);
+            else
+                StatusCode=EApiI2CWriteTransfer(i2cBus, slave, EAPI_I2C_ENC_STD_CMD(offset+index),writestr + index, 32);
+
+            tempLength -= 32;
+            index += 32;
+        }
+    }
+
     if(EAPI_TEST_SUCCESS(StatusCode))
         writeValue->setText("Successful");
     else
         writeValue->setText("Error!");
+}
+void i2c::writereadClicked()
+{
+    unsigned int size = 0;
+    uint8_t *writestr;
+    uint8_t *readstr;
+    unsigned int originsize;
+    unsigned int i = 0 , j =0;
+    char hex[2];
+    uint8_t num;
 
+    EApiStatus_t StatusCode = EAPI_STATUS_SUCCESS;
+
+    originsize = input.size();
+
+    if (originsize % 2 == 0)
+        size = originsize / 2 ;
+    else
+        size = (originsize /2) + 1;
+
+    writestr = (uint8_t*) malloc(sizeof(uint8_t)*(size));
+
+    j = 0;
+    for (i = 0; i < originsize ; i+=2)
+    {
+        if (((i+1) == originsize) && (originsize % 2 != 0))
+        {
+            hex[0] = (char)'0';
+            hex[1] = input.at(i).toLatin1();
+        }
+        else
+        {
+            hex[0] = input.at(i).toLatin1();
+            hex[1] = input.at(i+1).toLatin1();
+        }
+
+        num = (int)strtol(hex, NULL, 16);
+        if (j < size)
+        {
+            writestr[j] = num;
+            j++;
+        }
+    }
+
+    int writetempLength = size;
+    if (writelength > size)
+        writetempLength = size;
+    else
+        writetempLength = writelength;
+
+    readstr = (uint8_t*) malloc(sizeof(uint8_t)*(readlength+1));
+
+    StatusCode = EApiI2CWriteReadRaw(i2cBus, slave, writestr , writetempLength+1, readstr ,  readlength+1  ,  readlength+1);
+
+    if(EAPI_TEST_SUCCESS(StatusCode))
+    {
+        writeValue->setText("Successful");
+
+        QString tokens;
+        for(i = 0; i < readlength ;i ++) {
+            uint8_t value = readstr[i] / 16;
+            if (value ==0 || value <=9)
+                tokens.append(48+value);
+            else
+                tokens.append(65+(value%10));
+
+            value = readstr[i] % 16;
+            if (value ==0 || value <=9)
+                tokens.append(48+value);
+            else
+                tokens.append(65+(value%10));
+
+            tokens.append(" ");
+        }
+        readValue->setText(tokens);
+    }
+    else
+    {
+        writeValue->setText("Error!");
+        readValue->setText("Error!");
+    }
+
+    free(readstr);
+    free(writestr);
 }
 void i2c::temperatureClicked()
 {
@@ -307,6 +551,7 @@ void i2c::temperatureClicked()
     else
     {
         temperatureButton->setText("Temperature");
+        circlewidget->setDiameter(0);
         timer->stop();
     }
 }
@@ -315,11 +560,34 @@ void i2c::timeoutTimer()
     unsigned char TmpStrBuf;
     EApiStatus_t StatusCode;
     StatusCode=EApiI2CReadTransfer(base_addr, 0x48, EAPI_I2C_ENC_STD_CMD(0),&TmpStrBuf, 1, 1);
-circlewidget->setDiameter((int)TmpStrBuf);
+
+    if(EAPI_TEST_SUCCESS(StatusCode))
+    {
+        circlewidget->setDiameter((int)TmpStrBuf);
+    }
+    else
+        circlewidget->setDiameter(0);
     update();
 }
-
-
+void i2c::getInput()
+{
+    if ((writeValue->toPlainText() == "Successful") ||
+        (writeValue->toPlainText() == "Error!"))
+    {
+        input.clear();
+        return;
+    }
+    input = writeValue->toPlainText().toUpper();
+    input.replace(QRegExp("[^A-F0-9]"), "");
+    QStringList tokens;
+    for(int i = 0; i < input.length(); i += 2) {
+        tokens << input.mid(i, 2);
+    }
+    writeValue->blockSignals(true);
+    writeValue->setText(tokens.join(" "));
+    writeValue->moveCursor(QTextCursor::EndOfBlock);
+    writeValue->blockSignals(false);
+}
 
 /**************************************/
 struct i2c_adap* i2c::more_adapters(struct i2c_adap *adapters, int n)
