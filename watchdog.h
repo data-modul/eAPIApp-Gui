@@ -31,8 +31,8 @@ private:
     QTimer  *timer;
     QTimer *remainedTimer;
     bool multiMode; /* false means single mode, true means multi mode */
-    int preTimeout;
-    int timeout;
+    unsigned int preTimeout;
+    unsigned int timeout;
     int count;
 
     QLabel *modes;
