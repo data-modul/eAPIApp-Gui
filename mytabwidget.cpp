@@ -34,7 +34,7 @@ void myTabWidget::myTabWidgetInitialize(void)
     setTabIcon(STORAGETAB,QIcon(":/Storage.png"));
 
     addTab(myi2c,"I2C");
-    setTabIcon(I2CTAB,QIcon(":/gpio.png"));
+    setTabIcon(I2CTAB,QIcon(":/i2c.png"));
 
 }
 void myTabWidget::currentChangedSlot(int index)

@@ -157,7 +157,7 @@ i2c::i2c(QWidget *parent)
     parameterGrid->addWidget(writelengthLabel,3,2);
     parameterGrid->addWidget(writelengthValue,3,3);
 
-    timingCheckbox = new QCheckBox("timing");
+    timingCheckbox = new QCheckBox("timing(0.005 sec)");
     parameterGrid->addWidget(timingCheckbox,3,4);
     timingCheckbox->setChecked(false);
     timing = false;

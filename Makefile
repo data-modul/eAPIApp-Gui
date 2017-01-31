@@ -579,6 +579,7 @@ qrc_resource.cpp: resource.qrc \
 		output-icon.png \
 		high.png \
 		low.png \
+		i2c.png \
 		hw.png \
 		question.png \
 		final-justdog-trans.png \
@@ -1260,6 +1261,13 @@ moc_mytabwidget.cpp: ../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/incl
 		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qtabbar.h \
 		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qrubberband.h \
 		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qabstractitemmodel.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/QPlainTextEdit \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qplaintextedit.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qabstracttextdocumentlayout.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qtextlayout.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qglyphrun.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qrawfont.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qfontdatabase.h \
 		circlewidget.h \
 		mytabwidget.h
 	/development/sdk-x86-qt5/sysroots/x86_64-pokysdk-linux/usr/bin/qt5/moc $(DEFINES) -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/lib/qt5/mkspecs/linux-oe-g++ -I/development/eAPI/gui-demo-2/gui-demo -I/development/eAPI/gui-demo-2/gui-demo/include -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5 -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/c++/4.9.3 -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/c++/4.9.3/x86_64-poky-linux -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/c++/4.9.3/backward -I/development/sdk-x86-qt5/sysroots/x86_64-pokysdk-linux/lib/x86_64-poky-linux/gcc/x86_64-poky-linux/4.9.3/include -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/lib/gcc/x86_64-poky-linux/4.9.3/include -I/development/sdk-x86-qt5/sysroots/x86_64-pokysdk-linux/lib/x86_64-poky-linux/gcc/x86_64-poky-linux/4.9.3/include-fixed -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include mytabwidget.h -o moc_mytabwidget.cpp
@@ -1671,6 +1679,18 @@ moc_i2c.cpp: ../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/
 		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qtabwidget.h \
 		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qrubberband.h \
 		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qabstractitemmodel.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/QTimer \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qtimer.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qbasictimer.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/QCheckBox \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qcheckbox.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/QPlainTextEdit \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qplaintextedit.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qabstracttextdocumentlayout.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qtextlayout.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qglyphrun.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qrawfont.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qfontdatabase.h \
 		circlewidget.h \
 		i2c.h
 	/development/sdk-x86-qt5/sysroots/x86_64-pokysdk-linux/usr/bin/qt5/moc $(DEFINES) -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/lib/qt5/mkspecs/linux-oe-g++ -I/development/eAPI/gui-demo-2/gui-demo -I/development/eAPI/gui-demo-2/gui-demo/include -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5 -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/c++/4.9.3 -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/c++/4.9.3/x86_64-poky-linux -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/c++/4.9.3/backward -I/development/sdk-x86-qt5/sysroots/x86_64-pokysdk-linux/lib/x86_64-poky-linux/gcc/x86_64-poky-linux/4.9.3/include -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/lib/gcc/x86_64-poky-linux/4.9.3/include -I/development/sdk-x86-qt5/sysroots/x86_64-pokysdk-linux/lib/x86_64-poky-linux/gcc/x86_64-poky-linux/4.9.3/include-fixed -I/development/sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include i2c.h -o moc_i2c.cpp
@@ -1974,6 +1994,13 @@ main.o: main.cpp ../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/
 		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qtabbar.h \
 		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qrubberband.h \
 		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qabstractitemmodel.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/QPlainTextEdit \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qplaintextedit.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qabstracttextdocumentlayout.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qtextlayout.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qglyphrun.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qrawfont.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qfontdatabase.h \
 		circlewidget.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
@@ -2687,6 +2714,13 @@ mytabwidget.o: mytabwidget.cpp mytabwidget.h \
 		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qtabbar.h \
 		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qrubberband.h \
 		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qabstractitemmodel.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/QPlainTextEdit \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qplaintextedit.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qabstracttextdocumentlayout.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qtextlayout.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qglyphrun.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qrawfont.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qfontdatabase.h \
 		circlewidget.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mytabwidget.o mytabwidget.cpp
 
@@ -3104,6 +3138,18 @@ i2c.o: i2c.cpp i2c.h \
 		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qtabwidget.h \
 		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qrubberband.h \
 		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qabstractitemmodel.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/QTimer \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qtimer.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtCore/qbasictimer.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/QCheckBox \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qcheckbox.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/QPlainTextEdit \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtWidgets/qplaintextedit.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qabstracttextdocumentlayout.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qtextlayout.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qglyphrun.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qrawfont.h \
+		../../../sdk-x86-qt5/sysroots/corei7-64-poky-linux/usr/include/qt5/QtGui/qfontdatabase.h \
 		circlewidget.h \
 		include/EApi.h \
 		include/EApiCOM0.h \

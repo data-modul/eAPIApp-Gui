@@ -12,5 +12,6 @@
   <file>low.png</file>
   <file>question.png</file>
   <file>Storage.png</file>
+  <file>i2c.png</file>
 </qresource>
 </RCC>

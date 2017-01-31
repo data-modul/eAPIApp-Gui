@@ -86,6 +86,7 @@ storage::storage(QWidget *parent)
     writeValue = new QTextEdit;
     writeValue->setFont(fontvalue);
     writeValue->setStyleSheet("QLabel { color : black; }");
+    connect(writeValue, SIGNAL(textChanged()), this, SLOT(getInput()));
 
     writeButton = new QPushButton(tr("Write"));
     connect( writeButton, SIGNAL( clicked() ), this, SLOT( writeClicked() ) );
@@ -134,7 +135,25 @@ void storage::readClicked()
 
         StatusCode=EApiStorageAreaRead(EAPI_ID_STORAGE_STD,offset,TmpStrBuf,pStorgeSize, length);
         if(EAPI_TEST_SUCCESS(StatusCode))
-            readValue->setText(TmpStrBuf);
+        {
+            QString tokens;
+            for(unsigned int i = 0; i < length ;i ++) {
+                uint8_t value = TmpStrBuf[i] / 16;
+                if (value ==0 || value <=9)
+                    tokens.append(48+value);
+                else
+                    tokens.append(65+(value%10));
+
+                value = TmpStrBuf[i] % 16;
+                if (value ==0 || value <=9)
+                    tokens.append(48+value);
+                else
+                    tokens.append(65+(value%10));
+
+                tokens.append(" ");
+            }
+            readValue->setText(tokens);
+        }
         else
             readValue->setText("Error!");
 
@@ -145,16 +164,53 @@ void storage::readClicked()
 }
 void storage::writeClicked()
 {
-    char *str;
-    QString inputstr;
-    QByteArray bytestr;
-    inputstr = writeValue->toPlainText().toStdString().data();
-    bytestr = inputstr.toLatin1();
-    str = bytestr.data();
-    uint32_t size = strlen(str);
+    unsigned int size = 0;
+    uint8_t *writestr;
+    unsigned int originsize;
+    unsigned int i = 0 , j =0;
+    char hex[2];
+    uint8_t num;
+
+    originsize = input.size();
+
+    if (originsize % 2 == 0)
+        size = originsize / 2 ;
+    else
+        size = (originsize /2) + 1;
+
+    writestr = (uint8_t*) malloc(sizeof(uint8_t)*(size));
+
+    j = 0;
+    for (i = 0; i < originsize ; i+=2)
+    {
+        if (((i+1) == originsize) && (originsize % 2 != 0))
+        {
+            hex[0] = (char)'0';
+            hex[1] = input.at(i).toLatin1();
+        }
+        else
+        {
+            hex[0] = input.at(i).toLatin1();
+            hex[1] = input.at(i+1).toLatin1();
+        }
+
+        num = (int)strtol(hex, NULL, 16);
+        if (j < size)
+        {
+            writestr[j] = num;
+            j++;
+        }
+    }
+
+    int tempLength = size;
+
+    if (length > size)
+        tempLength = size;
+    else
+        tempLength = length;
 
     EApiStatus_t StatusCode;
-    StatusCode=EApiStorageAreaWrite(EAPI_ID_STORAGE_STD,offset,str,size);
+    StatusCode=EApiStorageAreaWrite(EAPI_ID_STORAGE_STD,offset,writestr,tempLength);
     if(EAPI_TEST_SUCCESS(StatusCode))
         writeValue->setText("Successful");
     else
@@ -176,4 +232,23 @@ void storage::offsetChanged(QString text)
 void storage::lengthChanged(QString text)
 {
     length = text.toInt();
+}
+void storage::getInput()
+{
+    if ((writeValue->toPlainText() == "Successful") ||
+            (writeValue->toPlainText() == "Error!"))
+    {
+        input.clear();
+        return;
+    }
+    input = writeValue->toPlainText().toUpper();
+    input.replace(QRegExp("[^A-F0-9]"), "");
+    QStringList tokens;
+    for(int i = 0; i < input.length(); i += 2) {
+        tokens << input.mid(i, 2);
+    }
+    writeValue->blockSignals(true);
+    writeValue->setText(tokens.join(" "));
+    writeValue->moveCursor(QTextCursor::EndOfBlock);
+    writeValue->blockSignals(false);
 }

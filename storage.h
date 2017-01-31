@@ -22,6 +22,7 @@ public slots:
     void writeClicked();
     void offsetChanged(QString text);
     void lengthChanged(QString text);
+    void getInput();
 
 private:
     bool  definedStorage;
@@ -54,6 +55,8 @@ private:
      QGroupBox *byteGroup;
 
      QGridLayout *grid;
+
+     QString input;
 };
 
 #endif // STORAGE_H
