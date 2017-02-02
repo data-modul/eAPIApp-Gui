@@ -30,17 +30,17 @@ realtimeInfo::realtimeInfo(QWidget *parent)
     QFont fontvalue;
     fontvalue.setPointSize(11);
 
-    sensorLabel  = new QLabel(tr("Sensor"));
+    sensorLabel  = new QLabel("Sensor");
     sensorLabel->setFont(fontlabel);
     sensorLabel->setAlignment(Qt::AlignCenter);
     sensorLabel->setStyleSheet("QLabel { background-color : #143850; color : white; border: 1px solid white }");
 
-    sensorValueLabel  = new QLabel(tr("Value"));
+    sensorValueLabel  = new QLabel("Value");
     sensorValueLabel->setFont(fontlabel);
     sensorValueLabel->setAlignment(Qt::AlignCenter);
     sensorValueLabel->setStyleSheet("QLabel { background-color : #143850; color : white; border: 1px solid white }");
 
-    UnitLabel  = new QLabel(tr("Unit"));;
+    UnitLabel  = new QLabel("Unit");
     UnitLabel->setFont(fontlabel);
     UnitLabel->setAlignment(Qt::AlignCenter);
     UnitLabel->setStyleSheet("QLabel { background-color : #143850; color : white; border: 1px solid white }");
@@ -52,7 +52,7 @@ realtimeInfo::realtimeInfo(QWidget *parent)
     sensorlayout->addWidget(UnitLabel);
 
     /**************** TEMP ****************************************/
-    cpuTempLabel  = new QLabel(tr("CPU Temperature"));
+    cpuTempLabel  = new QLabel("CPU Temperature");
     cpuTempLabel->setFont(fontvalue);
     cpuTempLabel->setAlignment(Qt::AlignCenter);
     cpuTempLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
@@ -62,13 +62,13 @@ realtimeInfo::realtimeInfo(QWidget *parent)
     cpuTempValueLabel->setAlignment(Qt::AlignCenter);
     cpuTempValueLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
 
-    cpuTempUnitLabel  = new QLabel(tr("Celsius"));;
+    cpuTempUnitLabel  = new QLabel("Celsius");
     cpuTempUnitLabel->setFont(fontvalue);
     cpuTempUnitLabel->setAlignment(Qt::AlignCenter);
     cpuTempUnitLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
 
 
-    moduleTempLabel  = new QLabel(tr("Module Temperature"));
+    moduleTempLabel  = new QLabel("Module Temperature");
     moduleTempLabel->setFont(fontvalue);
     moduleTempLabel->setAlignment(Qt::AlignCenter);
     moduleTempLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
@@ -78,7 +78,7 @@ realtimeInfo::realtimeInfo(QWidget *parent)
     moduleTempValueLabel->setAlignment(Qt::AlignCenter);
     moduleTempValueLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
 
-    moduleTempUnitLabel  = new QLabel(tr("Celsius"));;
+    moduleTempUnitLabel  = new QLabel("Celsius");
     moduleTempUnitLabel->setFont(fontvalue);
     moduleTempUnitLabel->setAlignment(Qt::AlignCenter);
     moduleTempUnitLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
@@ -100,12 +100,12 @@ realtimeInfo::realtimeInfo(QWidget *parent)
     tempLayout->addLayout(cpuTemplayout);
     tempLayout->addLayout(moduleTemplayout);
 
-    groupTemp = new QGroupBox(tr("Temperature Sensors"));
+    groupTemp = new QGroupBox("Temperature Sensors");
     groupTemp->setFont(fontlabel);
     groupTemp->setLayout(tempLayout);
 
     /************ VOLTAGE ********************************************/
-    s0VoltageLabel  = new QLabel(tr("3.3V S0"));
+    s0VoltageLabel  = new QLabel("3.3V S0");
     s0VoltageLabel->setFont(fontvalue);
     s0VoltageLabel->setAlignment(Qt::AlignCenter);
     s0VoltageLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
@@ -115,7 +115,7 @@ realtimeInfo::realtimeInfo(QWidget *parent)
     s0VoltageValueLabel->setAlignment(Qt::AlignCenter);
     s0VoltageValueLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
 
-    s0VoltageUnitLabel  = new QLabel(tr("V"));;
+    s0VoltageUnitLabel  = new QLabel("V");
     s0VoltageUnitLabel->setFont(fontvalue);
     s0VoltageUnitLabel->setAlignment(Qt::AlignCenter);
     s0VoltageUnitLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
@@ -128,7 +128,7 @@ realtimeInfo::realtimeInfo(QWidget *parent)
 
     /**/
 
-    battVoltageLabel  = new QLabel(tr("Battery Voltage"));
+    battVoltageLabel  = new QLabel("Battery Voltage");
     battVoltageLabel->setFont(fontvalue);
     battVoltageLabel->setAlignment(Qt::AlignCenter);
     battVoltageLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
@@ -138,7 +138,7 @@ realtimeInfo::realtimeInfo(QWidget *parent)
     battVoltageValueLabel->setAlignment(Qt::AlignCenter);
     battVoltageValueLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
 
-    battVoltageUnitLabel  = new QLabel(tr("V"));;
+    battVoltageUnitLabel  = new QLabel("V");
     battVoltageUnitLabel->setFont(fontvalue);
     battVoltageUnitLabel->setAlignment(Qt::AlignCenter);
     battVoltageUnitLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
@@ -151,7 +151,7 @@ realtimeInfo::realtimeInfo(QWidget *parent)
 
     /**/
 
-    s5VoltageLabel  = new QLabel(tr("5.0V S5"));
+    s5VoltageLabel  = new QLabel("5.0V S5");
     s5VoltageLabel->setFont(fontvalue);
     s5VoltageLabel->setAlignment(Qt::AlignCenter);
     s5VoltageLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
@@ -161,7 +161,7 @@ realtimeInfo::realtimeInfo(QWidget *parent)
     s5VoltageValueLabel->setAlignment(Qt::AlignCenter);
     s5VoltageValueLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
 
-    s5VoltageUnitLabel  = new QLabel(tr("V"));;
+    s5VoltageUnitLabel  = new QLabel("V");
     s5VoltageUnitLabel->setFont(fontvalue);
     s5VoltageUnitLabel->setAlignment(Qt::AlignCenter);
     s5VoltageUnitLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
@@ -174,7 +174,7 @@ realtimeInfo::realtimeInfo(QWidget *parent)
 
     /**/
 
-    inputVoltageLabel  = new QLabel(tr("Wide Range Input"));
+    inputVoltageLabel  = new QLabel("Wide Range Input");
     inputVoltageLabel->setFont(fontvalue);
     inputVoltageLabel->setAlignment(Qt::AlignCenter);
     inputVoltageLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
@@ -184,7 +184,7 @@ realtimeInfo::realtimeInfo(QWidget *parent)
     inputVoltageValueLabel->setAlignment(Qt::AlignCenter);
     inputVoltageValueLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
 
-    inputVoltageUnitLabel  = new QLabel(tr("V"));;
+    inputVoltageUnitLabel  = new QLabel("V");
     inputVoltageUnitLabel->setFont(fontvalue);
     inputVoltageUnitLabel->setAlignment(Qt::AlignCenter);
     inputVoltageUnitLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
@@ -201,12 +201,12 @@ realtimeInfo::realtimeInfo(QWidget *parent)
     voltageLayout->addLayout(s5Voltagelayout);
     voltageLayout->addLayout(inputVoltagelayout);
 
-    groupVoltage = new QGroupBox(tr("Voltage Sensors"));
+    groupVoltage = new QGroupBox("Voltage Sensors");
     groupVoltage->setFont(fontlabel);
     groupVoltage->setLayout(voltageLayout);
 
     /************* FAN *******************************************/
-    fanLabel  = new QLabel(tr("Carrier Fan"));
+    fanLabel  = new QLabel("Carrier Fan");
     fanLabel->setFont(fontvalue);
     fanLabel->setAlignment(Qt::AlignCenter);
     fanLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
@@ -216,7 +216,7 @@ realtimeInfo::realtimeInfo(QWidget *parent)
     fanValueLabel->setAlignment(Qt::AlignCenter);
     fanValueLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
 
-    fanUnitLabel  = new QLabel(tr("RPM"));;
+    fanUnitLabel  = new QLabel("RPM");
     fanUnitLabel->setFont(fontvalue);
     fanUnitLabel->setAlignment(Qt::AlignCenter);
     fanUnitLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
@@ -228,13 +228,13 @@ realtimeInfo::realtimeInfo(QWidget *parent)
     fanlayout->addWidget(fanValueLabel);
     fanlayout->addWidget(fanUnitLabel);
 
-    groupFan = new QGroupBox(tr("Fan Sensors"));
+    groupFan = new QGroupBox("Fan Sensors");
     groupFan->setFont(fontlabel);
     groupFan->setLayout(fanlayout);
 
 
     /**************** RTM ****************************************/
-    bootRTMLabel  = new QLabel(tr("Boot Counter"));
+    bootRTMLabel  = new QLabel("Boot Counter");
     bootRTMLabel->setFont(fontvalue);
     bootRTMLabel->setAlignment(Qt::AlignCenter);
     bootRTMLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
@@ -244,13 +244,13 @@ realtimeInfo::realtimeInfo(QWidget *parent)
     bootRTMValueLabel->setAlignment(Qt::AlignCenter);
     bootRTMValueLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
 
-    bootRTMUnitLabel  = new QLabel(tr("Boots"));;
+    bootRTMUnitLabel  = new QLabel("Boots");
     bootRTMUnitLabel->setFont(fontvalue);
     bootRTMUnitLabel->setAlignment(Qt::AlignCenter);
     bootRTMUnitLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
 
 
-    runTimeRTMLabel  = new QLabel(tr("Running Time"));
+    runTimeRTMLabel  = new QLabel("Running Time");
     runTimeRTMLabel->setFont(fontvalue);
     runTimeRTMLabel->setAlignment(Qt::AlignCenter);
     runTimeRTMLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
@@ -260,7 +260,7 @@ realtimeInfo::realtimeInfo(QWidget *parent)
     runTimeRTMValueLabel->setAlignment(Qt::AlignCenter);
     runTimeRTMValueLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
 
-    runTimeRTMUnitLabel  = new QLabel(tr("Minutes"));;
+    runTimeRTMUnitLabel  = new QLabel("Minutes");
     runTimeRTMUnitLabel->setFont(fontvalue);
     runTimeRTMUnitLabel->setAlignment(Qt::AlignCenter);
     runTimeRTMUnitLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
@@ -282,7 +282,7 @@ realtimeInfo::realtimeInfo(QWidget *parent)
     rtmLayout->addLayout(bootRTMlayout);
     rtmLayout->addLayout(runTimeRTMlayout);
 
-    groupRTM = new QGroupBox(tr("Operating System"));
+    groupRTM = new QGroupBox("Operating System");
     groupRTM->setFont(fontlabel);
     groupRTM->setLayout(rtmLayout);
 
@@ -314,12 +314,12 @@ realtimeInfo::realtimeInfo(QWidget *parent)
     brightnessLayout->addWidget(currentBrightnessValue);
     brightnessLayout->addLayout(gridBrightness);
 
-    groupBrightness = new QGroupBox(tr("Brightness"));
+    groupBrightness = new QGroupBox("Brightness");
     groupBrightness->setFont(fontlabel);
     groupBrightness->setLayout(brightnessLayout);
 
     EApiStatus_t StatusCode = EAPI_STATUS_SUCCESS;
-    uint32_t Value;
+    uint32_t Value = 0;
     char  *pBuffer;
     int pBufferLen = 100;
 

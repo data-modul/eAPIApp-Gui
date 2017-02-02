@@ -42,7 +42,7 @@ storage::storage(QWidget *parent)
     infoLayout->addWidget(storageType);
     infoLayout->addWidget(storageSize);
 
-    infoGroup = new QGroupBox(tr("Information"));
+    infoGroup = new QGroupBox("Information");
     infoGroup->setFont(fontlabel);
     infoGroup->setLayout(infoLayout);
     /*************************************************/
@@ -88,7 +88,7 @@ storage::storage(QWidget *parent)
     writeValue->setStyleSheet("QLabel { color : black; }");
     connect(writeValue, SIGNAL(textChanged()), this, SLOT(getInput()));
 
-    writeButton = new QPushButton(tr("Write"));
+    writeButton = new QPushButton("Write");
     connect( writeButton, SIGNAL( clicked() ), this, SLOT( writeClicked() ) );
     if (definedStorage == false)
         writeButton->setEnabled(false);
@@ -104,7 +104,7 @@ storage::storage(QWidget *parent)
     readValue->setStyleSheet("QTextEdit { background-color: #BDD8CA; color : black; }");
     readValue->setReadOnly(true);
 
-    readButton = new QPushButton(tr("Read"));
+    readButton = new QPushButton("Read");
     if (definedStorage == false)
         readButton->setEnabled(false);
     connect( readButton, SIGNAL( clicked() ), this, SLOT( readClicked() ) );
@@ -114,7 +114,7 @@ storage::storage(QWidget *parent)
     bytegrid->addWidget(readButton,4,2);
 
 
-    byteGroup = new QGroupBox(tr("Read/Write Data"));
+    byteGroup = new QGroupBox("Read/Write Data");
     byteGroup->setFont(fontlabel);
     byteGroup->setLayout(bytegrid);
 
@@ -166,10 +166,10 @@ void storage::writeClicked()
 {
     unsigned int size = 0;
     uint8_t *writestr;
-    unsigned int originsize;
+    unsigned int originsize = 0;
     unsigned int i = 0 , j =0;
-    char hex[2];
-    uint8_t num;
+    char hex[2] = {(char)'0',(char)'0'};
+    uint8_t num = 0;
 
     originsize = input.size();
 
@@ -215,6 +215,8 @@ void storage::writeClicked()
         writeValue->setText("Successful");
     else
         writeValue->setText("Error!");
+
+    free(writestr);
 
 }
 void storage::offsetChanged(QString text)

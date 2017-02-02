@@ -65,7 +65,7 @@ boardInfo::boardInfo(QWidget *parent)
     QFont fontvalue;
     fontvalue.setPointSize(11);
 
-    manufacturerNameLabel  = new QLabel(tr("Board Manufacturer"));
+    manufacturerNameLabel  = new QLabel("Board Manufacturer");
     manufacturerNameLabel->setFont(fontvalue);
     manufacturerNameLabel->setAlignment(Qt::AlignCenter);
     manufacturerNameLabel->setStyleSheet("QLabel { background-color : #143850; color : white; border: 1px solid white }");
@@ -82,7 +82,7 @@ boardInfo::boardInfo(QWidget *parent)
 
 
 
-    pnpLabel      = new QLabel(tr("Manufacturer PNP ID"));
+    pnpLabel      = new QLabel("Manufacturer PNP ID");
     pnpLabel->setFont(fontvalue);
     pnpLabel->setAlignment(Qt::AlignCenter);
     pnpLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
@@ -97,7 +97,7 @@ boardInfo::boardInfo(QWidget *parent)
     pnplayout->addWidget(pnpLabel);
     pnplayout->addWidget(pnpValueLabel);
 
-    boardNameLabel         = new QLabel(tr("Board Name"));
+    boardNameLabel         = new QLabel("Board Name");
     boardNameLabel->setFont(fontvalue);
     boardNameLabel->setAlignment(Qt::AlignCenter);
     boardNameLabel->setStyleSheet("QLabel { background-color : #143850; color : white; border: 1px solid white }");
@@ -112,7 +112,7 @@ boardInfo::boardInfo(QWidget *parent)
     boardNamelayout->addWidget(boardNameLabel);
     boardNamelayout->addWidget(boardNameValueLabel);
 
-    boardIDLabel           = new QLabel(tr("Board ID"));
+    boardIDLabel           = new QLabel("Board ID");
     boardIDLabel->setFont(fontvalue);
     boardIDLabel->setAlignment(Qt::AlignCenter);
     boardIDLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
@@ -127,7 +127,7 @@ boardInfo::boardInfo(QWidget *parent)
     boardIDlayout->addWidget(boardIDLabel);
     boardIDlayout->addWidget(boardIDValueLabel);
 
-    boardSNLabel           = new QLabel(tr("Board Serial-Number"));
+    boardSNLabel           = new QLabel("Board Serial-Number");
     boardSNLabel->setFont(fontvalue);
     boardSNLabel->setAlignment(Qt::AlignCenter);
     boardSNLabel->setStyleSheet("QLabel { background-color : #143850; color : white; border: 1px solid white }");
@@ -142,7 +142,7 @@ boardInfo::boardInfo(QWidget *parent)
     boardSNlayout->addWidget(boardSNLabel);
     boardSNlayout->addWidget(boardSNValueLabel);
 
-    biosRevisionLabel      = new QLabel(tr("BIOS Revision"));
+    biosRevisionLabel      = new QLabel("BIOS Revision");
     biosRevisionLabel->setFont(fontvalue);
     biosRevisionLabel->setAlignment(Qt::AlignCenter);
     biosRevisionLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
@@ -157,7 +157,7 @@ boardInfo::boardInfo(QWidget *parent)
     biosRevisionlayout->addWidget(biosRevisionLabel);
     biosRevisionlayout->addWidget(biosRevisionValueLabel);
 
-    platformTypeLabel      = new QLabel(tr("Platform Type"));
+    platformTypeLabel      = new QLabel("Platform Type");
     platformTypeLabel->setFont(fontvalue);
     platformTypeLabel->setAlignment(Qt::AlignCenter);
     platformTypeLabel->setStyleSheet("QLabel { background-color : #143850; color : white; border: 1px solid white }");
@@ -172,7 +172,7 @@ boardInfo::boardInfo(QWidget *parent)
     platformTypelayout->addWidget(platformTypeLabel);
     platformTypelayout->addWidget(platformTypeValueLabel);
 
-    HWRevisionLabel      = new QLabel(tr("HW Revision"));
+    HWRevisionLabel      = new QLabel("HW Revision");
     HWRevisionLabel->setFont(fontvalue);
     HWRevisionLabel->setAlignment(Qt::AlignCenter);
     HWRevisionLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
@@ -187,7 +187,7 @@ boardInfo::boardInfo(QWidget *parent)
     HWRevisionlayout->addWidget(HWRevisionLabel);
     HWRevisionlayout->addWidget(HWRevisionValueLabel);
 
-    manufacturDateLabel      = new QLabel(tr("Manufacturing Date"));
+    manufacturDateLabel      = new QLabel("Manufacturing Date");
     manufacturDateLabel->setFont(fontvalue);
     manufacturDateLabel->setAlignment(Qt::AlignCenter);
     manufacturDateLabel->setStyleSheet("QLabel { background-color : #143850; color : white; border: 1px solid white }");
@@ -202,7 +202,7 @@ boardInfo::boardInfo(QWidget *parent)
     manufacturDatelayout->addWidget(manufacturDateLabel);
     manufacturDatelayout->addWidget(manufacturDateValueLabel);
 
-    specRevisionLabel      = new QLabel(tr("EAPI Specification Version"));
+    specRevisionLabel      = new QLabel("EAPI Specification Version");
     specRevisionLabel->setFont(fontvalue);
     specRevisionLabel->setAlignment(Qt::AlignCenter);
     specRevisionLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
@@ -230,7 +230,7 @@ boardInfo::boardInfo(QWidget *parent)
     mainLayout->addLayout(manufacturDatelayout);
     mainLayout->addLayout(specRevisionlayout);
 
-    group = new QGroupBox(tr("Information"));
+    group = new QGroupBox("Information");
     group->setFont(fontlabel);
     group->setLayout(mainLayout);
 

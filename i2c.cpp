@@ -19,15 +19,15 @@ i2c::i2c(QWidget *parent)
 
     timer = new QTimer(this);
 
-    readWriteByteRadioButton = new QRadioButton(tr("Read/Write Register"));
+    readWriteByteRadioButton = new QRadioButton("Read/Write Register");
     readWriteByteRadioButton->setFont(fontvalue);
     readWriteByteRadioButton->setStyleSheet("QLabel { color : black; }");
 
-    readWriteBlockRadioButton = new QRadioButton(tr("Read/Write Block(Continuous)"));
+    readWriteBlockRadioButton = new QRadioButton("Read/Write Block(Continuous)");
     readWriteBlockRadioButton->setFont(fontvalue);
     readWriteBlockRadioButton->setStyleSheet("QLabel { color : black; }");
 
-    readWriteCombineRadioButton = new QRadioButton(tr("Write Read Raw"));
+    readWriteCombineRadioButton = new QRadioButton("Write Read Raw");
     readWriteCombineRadioButton->setFont(fontvalue);
     readWriteCombineRadioButton->setStyleSheet("QLabel { color : black; }");
 
@@ -43,7 +43,7 @@ i2c::i2c(QWidget *parent)
     protocolLayout->addWidget(readWriteBlockRadioButton);
     protocolLayout->addWidget(readWriteCombineRadioButton);
 
-    protocolGroup = new QGroupBox(tr("Protocol"));
+    protocolGroup = new QGroupBox("Protocol");
     protocolGroup->setFont(fontlabel);
     protocolGroup->setLayout(protocolLayout);
 
@@ -88,7 +88,7 @@ i2c::i2c(QWidget *parent)
     deviceLayout = new QHBoxLayout;
     deviceLayout->addLayout(deviceGrid);
 
-    deviceGroup = new QGroupBox(tr("Device"));
+    deviceGroup = new QGroupBox("Device");
     deviceGroup->setFont(fontlabel);
     deviceGroup->setLayout(deviceLayout);
 
@@ -110,11 +110,11 @@ i2c::i2c(QWidget *parent)
     offsetTypeLabel->setFont(fontlabel);
     offsetTypeLabel->setStyleSheet("QLabel { color : black; }");
 
-    byteRadioButton = new QRadioButton(tr("byte"));
+    byteRadioButton = new QRadioButton("byte");
     byteRadioButton->setFont(fontvalue);
     byteRadioButton->setStyleSheet("QLabel { color : black; }");
 
-    wordRadioButton = new QRadioButton(tr("word"));
+    wordRadioButton = new QRadioButton("word");
     wordRadioButton->setFont(fontvalue);
     wordRadioButton->setStyleSheet("QLabel { color : black; }");
 
@@ -170,10 +170,10 @@ i2c::i2c(QWidget *parent)
     writeValue->setStyleSheet("QLabel { color : black; }");
     connect(writeValue, SIGNAL(textChanged()), this, SLOT(getInput()));
 
-    writeButton = new QPushButton(tr("Write"));
+    writeButton = new QPushButton("Write");
     connect( writeButton, SIGNAL( clicked() ), this, SLOT( writeClicked() ) );
 
-    writereadCombineButton = new QPushButton(tr("WriteRead Combined"));
+    writereadCombineButton = new QPushButton("WriteRead Combined");
     connect( writereadCombineButton, SIGNAL( clicked() ), this, SLOT( writereadClicked() ) );
     writereadCombineButton->setEnabled(false);
 
@@ -188,7 +188,7 @@ i2c::i2c(QWidget *parent)
     readValue->setStyleSheet("QTextEdit { background-color: #BDD8CA; color : black; }");
     readValue->setReadOnly(true);
 
-    readButton = new QPushButton(tr("Read"));
+    readButton = new QPushButton("Read");
     // readButton->setEnabled(false);
     connect( readButton, SIGNAL( clicked() ), this, SLOT( readClicked() ) );
 
@@ -197,12 +197,12 @@ i2c::i2c(QWidget *parent)
     parameterGrid->addWidget(readValue,7,0,1,4);
     parameterGrid->addWidget(readButton,7,4);
 
-    controlGroup = new QGroupBox(tr("Control"));
+    controlGroup = new QGroupBox("Control");
     controlGroup->setFont(fontlabel);
     controlGroup->setLayout(parameterGrid);
 
     /******************************************************/
-    temperatureButton = new QPushButton(tr("Temperature"));
+    temperatureButton = new QPushButton("Temperature");
 
     circlewidget = new CircleWidget;
     circlewidget->setAntialiased(true);
@@ -215,7 +215,7 @@ i2c::i2c(QWidget *parent)
     demoGrid->addWidget(temperatureButton,1,0);
     demoGrid->addWidget(circlewidget, 2, 0);
 
-    demoGroup = new QGroupBox(tr("Demo"));
+    demoGroup = new QGroupBox("Demo");
     demoGroup->setFont(fontlabel);
     demoGroup->setLayout(demoGrid);
 

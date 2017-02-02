@@ -23,15 +23,15 @@ watchdog::watchdog(QWidget *parent)
     remainedTimer = new QTimer();
     connect(remainedTimer, SIGNAL(timeout()), this, SLOT(timeoutRemainedTimer()));
 
-    modes = new QLabel(tr("Modes:"));
+    modes = new QLabel("Modes:");
     modes->setFont(fontvalue);
     modes->setStyleSheet("QLabel { color : black; }");
 
-    singlestage = new QRadioButton(tr("Single stage"));
+    singlestage = new QRadioButton("Single stage");
     singlestage->setFont(fontvalue);
     singlestage->setStyleSheet("QLabel { color : black; }");
 
-    multistages = new QRadioButton(tr("Multi Stages"));
+    multistages = new QRadioButton("Multi Stages");
     multistages->setFont(fontvalue);
     multistages->setStyleSheet("QLabel { color : black; }");
 
@@ -45,7 +45,7 @@ watchdog::watchdog(QWidget *parent)
     modeLayout->addWidget(singlestage);
     modeLayout->addWidget(multistages);
 
-    modeGroup = new QGroupBox(tr("Mode Configuration"));
+    modeGroup = new QGroupBox("Mode Configuration");
     modeGroup->setFont(fontlabel);
     modeGroup->setLayout(modeLayout);
 
@@ -81,7 +81,7 @@ watchdog::watchdog(QWidget *parent)
     timeoutValue->setFixedWidth(100);
     QValidator *validator = new QIntValidator(0, maxResetTimeout, this);
     timeoutValue->setValidator(validator);
-    timeoutRequiredLabel = new QLabel(tr("*required"));
+    timeoutRequiredLabel = new QLabel("*required");
     timeoutRequiredLabel->setStyleSheet("QLabel { color : black; }");
 
     connect(timeoutValue, SIGNAL(textChanged(QString)), this, SLOT(setTimeout(QString)));
@@ -95,7 +95,7 @@ watchdog::watchdog(QWidget *parent)
     timeLayout->addLayout(preTimeoutlayout);
     timeLayout->addLayout(timeoutlayout);
 
-    timeGroup = new QGroupBox(tr("Timeout Configuration"));
+    timeGroup = new QGroupBox("Timeout Configuration");
     timeGroup->setFont(fontlabel);
     timeGroup->setLayout(timeLayout);
     /******/
@@ -118,18 +118,18 @@ watchdog::watchdog(QWidget *parent)
     outputLayout->addWidget(whgpicture);
     outputLayout->addLayout(insideoutputLayout);
 
-    outputGroup = new QGroupBox(tr("Output"));
+    outputGroup = new QGroupBox("Output");
     outputGroup->setFont(fontlabel);
     outputGroup->setLayout(outputLayout);
 
     /*******/
-    start = new QPushButton(tr("Start"));
+    start = new QPushButton("Start");
     connect( start, SIGNAL( clicked() ), this, SLOT( startClicked() ) );
 
-    stop = new QPushButton(tr("Stop"));
+    stop = new QPushButton("Stop");
     connect( stop, SIGNAL( clicked() ), this, SLOT( stopClicked() ) );
 
-    stopTrigger = new QPushButton(tr("Stop Triggering"));
+    stopTrigger = new QPushButton("Stop Triggering");
     connect( stopTrigger, SIGNAL( clicked() ), this, SLOT( stopTriggerClicked() ) );
 
     startEnable();

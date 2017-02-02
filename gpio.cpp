@@ -30,8 +30,9 @@ gpio::gpio(QWidget *parent)
     int i = 0;
     width = 30;
     height = 50;
+    demoState = false;
 
-    pinCounts = new QLabel(tr("Pin Count: 8"));
+    pinCounts = new QLabel("Pin Count: 8");
     pinCounts->setFont(fontlabel);
     pinCounts->setStyleSheet("QLabel { color : black; }");
 
@@ -43,7 +44,7 @@ gpio::gpio(QWidget *parent)
         gpioList[i]->setFont(fontvalue);
         gpioList[i]->setStyleSheet("QLabel { color : black; }");
     }
-    gpioBank00 = new QRadioButton(tr("GPIO Bank00"));
+    gpioBank00 = new QRadioButton("GPIO Bank00");
     gpioBank00->setFont(fontvalue);
     gpioBank00->setStyleSheet("QLabel { color : black; }");
 
@@ -103,17 +104,17 @@ gpio::gpio(QWidget *parent)
     deviceLayout->addWidget(gpioBank00);
     deviceLayout->addLayout(bankButtonLayout);
 
-    deviceGroup = new QGroupBox(tr("Device"));
+    deviceGroup = new QGroupBox("Device");
     deviceGroup->setFont(fontlabel);
     deviceGroup->setLayout(deviceLayout);
 
     /*******************************************/
 
-    directionLabel = new QLabel(tr("Direction:"));
+    directionLabel = new QLabel("Direction:");
     directionLabel->setFont(fontvalue);
     directionLabel->setStyleSheet("QLabel { color : black; }");
 
-    inOutButton = new QPushButton(tr("INPUT"));
+    inOutButton = new QPushButton("INPUT");
     inOutButton->setFont(fontlabel);
     inOutButton->setStyleSheet("color: green");
 
@@ -121,11 +122,11 @@ gpio::gpio(QWidget *parent)
     directionLayout->addWidget(directionLabel);
     directionLayout->addWidget(inOutButton);
 
-    valueLabel = new QLabel(tr("Level(value):"));
+    valueLabel = new QLabel("Level(value):");
     valueLabel->setFont(fontvalue);
     valueLabel->setStyleSheet("QLabel { color : black; }");
 
-    highLowButton = new QPushButton(tr("HIGH"));
+    highLowButton = new QPushButton("HIGH");
     highLowButton->setFont(fontlabel);
     highLowButton->setStyleSheet("color: green");
 
@@ -145,8 +146,8 @@ gpio::gpio(QWidget *parent)
     directionValueLayout->addLayout(directionLayout);
     directionValueLayout->addLayout(valueLayout);
 
-    getAction = new QPushButton(tr("Get"));
-    setAction = new QPushButton(tr("Set"));
+    getAction = new QPushButton("Get");
+    setAction = new QPushButton("Set");
     demo = new QPushButton("Start Demo");
 
     connect( getAction, SIGNAL( clicked() ), this, SLOT( getActionClicked() ) );
@@ -162,7 +163,7 @@ gpio::gpio(QWidget *parent)
     actionLayout->addLayout(directionValueLayout);
     actionLayout->addLayout(getSetLayout);
 
-    actionGroup = new QGroupBox(tr("Action"));
+    actionGroup = new QGroupBox("Action");
     actionGroup->setFont(fontlabel);
     actionGroup->setLayout(actionLayout);
 
@@ -223,7 +224,7 @@ gpio::gpio(QWidget *parent)
     statusLayout->addLayout(pinLevelLayout);
     statusLayout->addWidget(errorLabel);
 
-    statusGroup = new QGroupBox(tr("Status"));
+    statusGroup = new QGroupBox("Status");
     statusGroup->setFont(fontlabel);
     statusGroup->setLayout(statusLayout);
 
