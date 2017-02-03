@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
     if(!EAPI_TEST_SUCCESS(EApiLibInitialize()))
         exit(0);
 
-    w->setWindowTitle(QString::fromUtf8("DATA MODUL EAPI Tester"));
+    w->setWindowTitle(QString::fromUtf8("DATA MODUL EAPI Utility"));
    // w->resize(600, 600);
 
   //  QWidget *centralWidget = new QWidget(w);

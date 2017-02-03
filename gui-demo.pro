@@ -7,7 +7,7 @@
 QT       += core gui
 QT       += widgets
 
-TARGET = gui-demo
+TARGET = eAPI-DM-Utility
 TEMPLATE = app
 
 
@@ -34,7 +34,7 @@ HEADERS  += mainwindow.h \
 
 FORMS    += mainwindow.ui
 
-unix:!macx: LIBS += -L$$PWD/lib/ -lEApi
+unix:!macx: LIBS += -L/usr/local/lib/ -lEApi
 
 INCLUDEPATH += $$PWD/include
 DEPENDPATH += $$PWD/include
