@@ -1,10 +1,6 @@
 gui-demo
-gui-demo.pro
 gui-demo.pro.user
 *.o
-mainwindow.ui
 moc*
-*.png
-*.jpg
 lib/*
-include/*
+qrc_resource.cpp
