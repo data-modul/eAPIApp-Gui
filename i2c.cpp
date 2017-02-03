@@ -173,7 +173,7 @@ i2c::i2c(QWidget *parent)
     writeButton = new QPushButton("Write");
     connect( writeButton, SIGNAL( clicked() ), this, SLOT( writeClicked() ) );
 
-    writereadCombineButton = new QPushButton("WriteRead Combined");
+    writereadCombineButton = new QPushButton("W/R Combined");
     connect( writereadCombineButton, SIGNAL( clicked() ), this, SLOT( writereadClicked() ) );
     writereadCombineButton->setEnabled(false);
 
