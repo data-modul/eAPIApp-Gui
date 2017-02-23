@@ -34,7 +34,11 @@ HEADERS  += mainwindow.h \
 
 FORMS    += mainwindow.ui
 
-unix:!macx: LIBS += -L/usr/local/lib/ -lEApi
+LIBPATH = $$(PREFIX)
+equals(LIBPATH, "") {
+	LIBPATH=/usr/local/lib
+}
+unix:!macx: LIBS += -L$$LIBPATH -lEApi
 
 INCLUDEPATH += $$PWD/include
 DEPENDPATH += $$PWD/include
