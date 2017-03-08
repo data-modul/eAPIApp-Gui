@@ -23,7 +23,7 @@ i2c::i2c(QWidget *parent)
     readWriteByteRadioButton->setFont(fontvalue);
     readWriteByteRadioButton->setStyleSheet("QLabel { color : black; }");
 
-    readWriteBlockRadioButton = new QRadioButton("Read/Write Block(Continuous)");
+    readWriteBlockRadioButton = new QRadioButton("Read/Write Continuous");
     readWriteBlockRadioButton->setFont(fontvalue);
     readWriteBlockRadioButton->setStyleSheet("QLabel { color : black; }");
 
@@ -54,12 +54,23 @@ i2c::i2c(QWidget *parent)
     i2cIDLabel->setStyleSheet("QLabel { color : black; }");
 
     i2cID = new QComboBox;
-    base_addr = find_eeprom();
+    int tempresult =  find_eeprom();
+    if (tempresult == -1 )
+        base_addr = 0;
+    else
+        base_addr = tempresult;
+
     i2cID->setFont(fontvalue);
     i2cID->setStyleSheet("QComboBox { color : black; }");
     i2cID->addItem(QString::number(base_addr));
     i2cID->addItem(QString::number(base_addr+1));
     i2cID->addItem(QString::number(base_addr+2));
+
+    if (base_addr == 0) /* no i2c*/
+    {
+         i2cIDLabel->setStyleSheet("QLabel { color : red; }");
+        i2cID->setEnabled(false);
+    }
 
     i2cBus = base_addr;
 
@@ -95,7 +106,7 @@ i2c::i2c(QWidget *parent)
     /***********************************************/
     parameterGrid = new QGridLayout;
 
-    offsetLabel = new QLabel("Register Offset:");
+    offsetLabel = new QLabel("Reg-Offset:");
     offsetLabel->setFont(fontlabel);
     offsetLabel->setStyleSheet("QLabel { color : black; }");
 
@@ -131,7 +142,7 @@ i2c::i2c(QWidget *parent)
     parameterGrid->addWidget(wordRadioButton,2,4);
 
     readlengthLabel = new QLabel;
-    readlengthLabel->setText("Read Length");
+    readlengthLabel->setText("R-Length");
 
     readlengthValue = new QLineEdit("0");
     readlengthValue->setStyleSheet("QLabel { color : black; }");
@@ -145,7 +156,7 @@ i2c::i2c(QWidget *parent)
 
 
     writelengthLabel = new QLabel;
-    writelengthLabel->setText("Write Length");
+    writelengthLabel->setText("W-Length");
 
     writelengthValue = new QLineEdit("0");
     writelengthValue->setStyleSheet("QLabel { color : black; }");
@@ -157,7 +168,7 @@ i2c::i2c(QWidget *parent)
     parameterGrid->addWidget(writelengthLabel,3,2);
     parameterGrid->addWidget(writelengthValue,3,3);
 
-    timingCheckbox = new QCheckBox("timing(0.005 sec)");
+    timingCheckbox = new QCheckBox("W-Cycle(0.005 sec)");
     parameterGrid->addWidget(timingCheckbox,3,4);
     timingCheckbox->setChecked(false);
     timing = false;

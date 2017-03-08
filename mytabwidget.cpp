@@ -5,9 +5,7 @@ myTabWidget::myTabWidget(QWidget* parent)
     this->setParent(parent);
     connect(this , SIGNAL(currentChanged(int)),this,SLOT(currentChangedSlot(int)));
 
-      setFixedSize(750, 650);
-
-
+      setFixedSize(850, 650);
 }
 void myTabWidget::myTabWidgetInitialize(void)
 {
@@ -35,6 +33,9 @@ void myTabWidget::myTabWidgetInitialize(void)
 
     addTab(myi2c,"I2C");
     setTabIcon(I2CTAB,QIcon(":/i2c.png"));
+
+
+
 
 }
 void myTabWidget::currentChangedSlot(int index)

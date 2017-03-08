@@ -17,4 +17,5 @@ $ qmake gui-demo.pro
 $ make
 ~~~
 The EApi library should be installed in **/usr/local/lib**. In case of another
-installation path, the library path inside **gui-demo.pro** file should be updated.
+installation path, the library path inside **gui-demo.pro** file should be 
+referenced by **PREFIX** before run qmake command.
