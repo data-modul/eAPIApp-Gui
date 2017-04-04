@@ -65,155 +65,181 @@ boardInfo::boardInfo(QWidget *parent)
     QFont fontvalue;
     fontvalue.setPointSize(11);
 
-    manufacturerNameLabel  = new QLabel("Board Manufacturer");
-    manufacturerNameLabel->setFont(fontvalue);
-    manufacturerNameLabel->setAlignment(Qt::AlignCenter);
-    manufacturerNameLabel->setStyleSheet("QLabel { background-color : #143850; color : white; border: 1px solid white }");
+    QSizePolicy spLeft(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    spLeft.setHorizontalStretch(1);
+
+    QSizePolicy spRight(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    spRight.setHorizontalStretch(2);
+
+    manufacturerNameLabel  = new QLabel("Board Manufacturer:");
+    manufacturerNameLabel->setFont(fontlabel);
+    manufacturerNameLabel->setAlignment(Qt::AlignLeft);
+    manufacturerNameLabel->setStyleSheet("QLabel { color : #143850; border: 1px solid #999A9B }");
+    manufacturerNameLabel->setSizePolicy(spLeft);
 
     manufacturerNameValueLabel  = new QLabel;
     manufacturerNameValueLabel->setFont(fontvalue);
-    manufacturerNameValueLabel->setAlignment(Qt::AlignCenter);
-    manufacturerNameValueLabel->setStyleSheet("QLabel { background-color : #143850; color : white; border: 1px solid white }");
+    manufacturerNameValueLabel->setAlignment(Qt::AlignLeft);
+    manufacturerNameValueLabel->setStyleSheet("QLabel { color : #143850; border: 1px solid #999A9B }");
+    manufacturerNameValueLabel->setSizePolicy(spRight);
 
     manufacturerlayout=new QHBoxLayout;
-    manufacturerlayout->setSpacing(50);
+    manufacturerlayout->setSpacing(1);
     manufacturerlayout->addWidget(manufacturerNameLabel);
     manufacturerlayout->addWidget(manufacturerNameValueLabel);
 
 
 
-    pnpLabel      = new QLabel("Manufacturer PNP ID");
-    pnpLabel->setFont(fontvalue);
-    pnpLabel->setAlignment(Qt::AlignCenter);
-    pnpLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
+    pnpLabel      = new QLabel("Manufacturer PNP ID:");
+    pnpLabel->setFont(fontlabel);
+    pnpLabel->setAlignment(Qt::AlignLeft);
+    pnpLabel->setStyleSheet("QLabel { color : #143850; border: 1px solid #999A9B }");
+    pnpLabel->setSizePolicy(spLeft);
 
     pnpValueLabel = new QLabel;
     pnpValueLabel->setFont(fontvalue);
-    pnpValueLabel->setAlignment(Qt::AlignCenter);
-    pnpValueLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
+    pnpValueLabel->setAlignment(Qt::AlignLeft);
+    pnpValueLabel->setStyleSheet("QLabel { color : #143850; border: 1px solid #999A9B }");
+    pnpValueLabel->setSizePolicy(spRight);
 
     pnplayout=new QHBoxLayout;
-    pnplayout->setSpacing(50);
+    pnplayout->setSpacing(1);
     pnplayout->addWidget(pnpLabel);
     pnplayout->addWidget(pnpValueLabel);
 
-    boardNameLabel         = new QLabel("Board Name");
-    boardNameLabel->setFont(fontvalue);
-    boardNameLabel->setAlignment(Qt::AlignCenter);
-    boardNameLabel->setStyleSheet("QLabel { background-color : #143850; color : white; border: 1px solid white }");
+    boardNameLabel         = new QLabel("Board Name:");
+    boardNameLabel->setFont(fontlabel);
+    boardNameLabel->setAlignment(Qt::AlignLeft);
+    boardNameLabel->setStyleSheet("QLabel { color : #143850; border: 1px solid #999A9B }");
+    boardNameLabel->setSizePolicy(spLeft);
 
     boardNameValueLabel    = new QLabel;
     boardNameValueLabel->setFont(fontvalue);
-    boardNameValueLabel->setAlignment(Qt::AlignCenter);
-    boardNameValueLabel->setStyleSheet("QLabel { background-color : #143850; color : white; border: 1px solid white }");
+    boardNameValueLabel->setAlignment(Qt::AlignLeft);
+    boardNameValueLabel->setStyleSheet("QLabel { color : #143850; border: 1px solid #999A9B }");
+    boardNameValueLabel->setSizePolicy(spRight);
 
     boardNamelayout=new QHBoxLayout;
-    boardNamelayout->setSpacing(50);
+    boardNamelayout->setSpacing(1);
     boardNamelayout->addWidget(boardNameLabel);
     boardNamelayout->addWidget(boardNameValueLabel);
 
-    boardIDLabel           = new QLabel("Board ID");
-    boardIDLabel->setFont(fontvalue);
-    boardIDLabel->setAlignment(Qt::AlignCenter);
-    boardIDLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
+    boardIDLabel           = new QLabel("Board ID:");
+    boardIDLabel->setFont(fontlabel);
+    boardIDLabel->setAlignment(Qt::AlignLeft);
+    boardIDLabel->setStyleSheet("QLabel { color : #143850; border: 1px solid #999A9B }");
+    boardIDLabel->setSizePolicy(spLeft);
 
     boardIDValueLabel      = new QLabel;
     boardIDValueLabel->setFont(fontvalue);
-    boardIDValueLabel->setAlignment(Qt::AlignCenter);
-    boardIDValueLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
+    boardIDValueLabel->setAlignment(Qt::AlignLeft);
+    boardIDValueLabel->setStyleSheet("QLabel { color : #143850; border: 1px solid #999A9B }");
+    boardIDValueLabel->setSizePolicy(spRight);
 
     boardIDlayout=new QHBoxLayout;
-    boardIDlayout->setSpacing(50);
+    boardIDlayout->setSpacing(1);
     boardIDlayout->addWidget(boardIDLabel);
     boardIDlayout->addWidget(boardIDValueLabel);
 
-    boardSNLabel           = new QLabel("Board Serial-Number");
-    boardSNLabel->setFont(fontvalue);
-    boardSNLabel->setAlignment(Qt::AlignCenter);
-    boardSNLabel->setStyleSheet("QLabel { background-color : #143850; color : white; border: 1px solid white }");
+    boardSNLabel           = new QLabel("Board Serial-Number:");
+    boardSNLabel->setFont(fontlabel);
+    boardSNLabel->setAlignment(Qt::AlignLeft);
+    boardSNLabel->setStyleSheet("QLabel { color : #143850; border: 1px solid #999A9B }");
+    boardSNLabel->setSizePolicy(spLeft);
 
     boardSNValueLabel           = new QLabel;
     boardSNValueLabel->setFont(fontvalue);
-    boardSNValueLabel->setAlignment(Qt::AlignCenter);
-    boardSNValueLabel->setStyleSheet("QLabel { background-color : #143850; color : white; border: 1px solid white }");
+    boardSNValueLabel->setAlignment(Qt::AlignLeft);
+    boardSNValueLabel->setStyleSheet("QLabel { color : #143850; border: 1px solid #999A9B }");
+    boardSNValueLabel->setSizePolicy(spRight);
 
     boardSNlayout = new QHBoxLayout;
-    boardSNlayout->setSpacing(50);
+    boardSNlayout->setSpacing(1);
     boardSNlayout->addWidget(boardSNLabel);
     boardSNlayout->addWidget(boardSNValueLabel);
 
-    biosRevisionLabel      = new QLabel("BIOS Revision");
-    biosRevisionLabel->setFont(fontvalue);
-    biosRevisionLabel->setAlignment(Qt::AlignCenter);
-    biosRevisionLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
+    biosRevisionLabel      = new QLabel("BIOS Revision:");
+    biosRevisionLabel->setFont(fontlabel);
+    biosRevisionLabel->setAlignment(Qt::AlignLeft);
+    biosRevisionLabel->setStyleSheet("QLabel { color : #143850; border: 1px solid #999A9B }");
+    biosRevisionLabel->setSizePolicy(spLeft);
 
     biosRevisionValueLabel = new QLabel;
     biosRevisionValueLabel->setFont(fontvalue);
-    biosRevisionValueLabel->setAlignment(Qt::AlignCenter);
-    biosRevisionValueLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
+    biosRevisionValueLabel->setAlignment(Qt::AlignLeft);
+    biosRevisionValueLabel->setStyleSheet("QLabel { color : #143850; border: 1px solid #999A9B }");
+    biosRevisionValueLabel->setSizePolicy(spRight);
 
     biosRevisionlayout=new QHBoxLayout;
-    biosRevisionlayout->setSpacing(50);
+    biosRevisionlayout->setSpacing(1);
     biosRevisionlayout->addWidget(biosRevisionLabel);
     biosRevisionlayout->addWidget(biosRevisionValueLabel);
 
-    platformTypeLabel      = new QLabel("Platform Type");
-    platformTypeLabel->setFont(fontvalue);
-    platformTypeLabel->setAlignment(Qt::AlignCenter);
-    platformTypeLabel->setStyleSheet("QLabel { background-color : #143850; color : white; border: 1px solid white }");
+    platformTypeLabel      = new QLabel("Platform Type:");
+    platformTypeLabel->setFont(fontlabel);
+    platformTypeLabel->setAlignment(Qt::AlignLeft);
+    platformTypeLabel->setStyleSheet("QLabel { color : #143850; border: 1px solid #999A9B }");
+    platformTypeLabel->setSizePolicy(spLeft);
 
     platformTypeValueLabel = new QLabel;
     platformTypeValueLabel->setFont(fontvalue);
-    platformTypeValueLabel->setAlignment(Qt::AlignCenter);
-    platformTypeValueLabel->setStyleSheet("QLabel { background-color : #143850; color : white; border: 1px solid white }");
+    platformTypeValueLabel->setAlignment(Qt::AlignLeft);
+    platformTypeValueLabel->setStyleSheet("QLabel { color : #143850; border: 1px solid #999A9B }");
+    platformTypeValueLabel->setSizePolicy(spRight);
 
     platformTypelayout=new QHBoxLayout;
-    platformTypelayout->setSpacing(50);
+    platformTypelayout->setSpacing(1);
     platformTypelayout->addWidget(platformTypeLabel);
     platformTypelayout->addWidget(platformTypeValueLabel);
 
-    HWRevisionLabel      = new QLabel("HW Revision");
-    HWRevisionLabel->setFont(fontvalue);
-    HWRevisionLabel->setAlignment(Qt::AlignCenter);
-    HWRevisionLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
+    HWRevisionLabel      = new QLabel("HW Revisio:n");
+    HWRevisionLabel->setFont(fontlabel);
+    HWRevisionLabel->setAlignment(Qt::AlignLeft);
+    HWRevisionLabel->setStyleSheet("QLabel { color : #143850; border: 1px solid #999A9B }");
+    HWRevisionLabel->setSizePolicy(spLeft);
 
     HWRevisionValueLabel = new QLabel;
     HWRevisionValueLabel->setFont(fontvalue);
-    HWRevisionValueLabel->setAlignment(Qt::AlignCenter);
-    HWRevisionValueLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
+    HWRevisionValueLabel->setAlignment(Qt::AlignLeft);
+    HWRevisionValueLabel->setStyleSheet("QLabel { color : #143850; border: 1px solid #999A9B }");
+    HWRevisionValueLabel->setSizePolicy(spRight);
 
     HWRevisionlayout=new QHBoxLayout;
-    HWRevisionlayout->setSpacing(50);
+    HWRevisionlayout->setSpacing(1);
     HWRevisionlayout->addWidget(HWRevisionLabel);
     HWRevisionlayout->addWidget(HWRevisionValueLabel);
 
-    manufacturDateLabel      = new QLabel("Manufacturing Date");
-    manufacturDateLabel->setFont(fontvalue);
-    manufacturDateLabel->setAlignment(Qt::AlignCenter);
-    manufacturDateLabel->setStyleSheet("QLabel { background-color : #143850; color : white; border: 1px solid white }");
+    manufacturDateLabel      = new QLabel("Manufacturing Date:");
+    manufacturDateLabel->setFont(fontlabel);
+    manufacturDateLabel->setAlignment(Qt::AlignLeft);
+    manufacturDateLabel->setStyleSheet("QLabel { color : #143850; border: 1px solid #999A9B }");
+    manufacturDateLabel->setSizePolicy(spLeft);
 
     manufacturDateValueLabel = new QLabel;
     manufacturDateValueLabel->setFont(fontvalue);
-    manufacturDateValueLabel->setAlignment(Qt::AlignCenter);
-    manufacturDateValueLabel->setStyleSheet("QLabel { background-color : #143850; color : white; border: 1px solid white }");
+    manufacturDateValueLabel->setAlignment(Qt::AlignLeft);
+    manufacturDateValueLabel->setStyleSheet("QLabel { color : #143850; border: 1px solid #999A9B }");
+    manufacturDateValueLabel->setSizePolicy(spRight);
 
     manufacturDatelayout=new QHBoxLayout;
-    manufacturDatelayout->setSpacing(50);
+    manufacturDatelayout->setSpacing(1);
     manufacturDatelayout->addWidget(manufacturDateLabel);
     manufacturDatelayout->addWidget(manufacturDateValueLabel);
 
-    specRevisionLabel      = new QLabel("EAPI Specification Version");
-    specRevisionLabel->setFont(fontvalue);
-    specRevisionLabel->setAlignment(Qt::AlignCenter);
-    specRevisionLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
+    specRevisionLabel      = new QLabel("EAPI Specification Version:");
+    specRevisionLabel->setFont(fontlabel);
+    specRevisionLabel->setAlignment(Qt::AlignLeft);
+    specRevisionLabel->setStyleSheet("QLabel { color : #143850; border: 1px solid #999A9B }");
+    specRevisionLabel->setSizePolicy(spLeft);
 
     specRevisionValueLabel = new QLabel;
     specRevisionValueLabel->setFont(fontvalue);
-    specRevisionValueLabel->setAlignment(Qt::AlignCenter);
-    specRevisionValueLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
+    specRevisionValueLabel->setAlignment(Qt::AlignLeft);
+    specRevisionValueLabel->setStyleSheet("QLabel { color : #143850; border: 1px solid #999A9B }");
+    specRevisionValueLabel->setSizePolicy(spRight);
 
     specRevisionlayout=new QHBoxLayout;
-    specRevisionlayout->setSpacing(50);
+    specRevisionlayout->setSpacing(1);
     specRevisionlayout->addWidget(specRevisionLabel);
     specRevisionlayout->addWidget(specRevisionValueLabel);
 

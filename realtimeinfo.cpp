@@ -260,7 +260,7 @@ realtimeInfo::realtimeInfo(QWidget *parent)
     runTimeRTMValueLabel->setAlignment(Qt::AlignCenter);
     runTimeRTMValueLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
 
-    runTimeRTMUnitLabel  = new QLabel("Minutes");
+    runTimeRTMUnitLabel  = new QLabel("HH:MM");
     runTimeRTMUnitLabel->setFont(fontvalue);
     runTimeRTMUnitLabel->setAlignment(Qt::AlignCenter);
     runTimeRTMUnitLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
@@ -377,7 +377,7 @@ void realtimeInfo::fill(void)
                 bootRTMValueLabel->setText(pBuffer);
                 break;
             case EAPI_ID_BOARD_RUNNING_TIME_METER_VAL:
-                snprintf(pBuffer, pBufferLen,"%u", Value%60);
+                snprintf(pBuffer, pBufferLen,"%u:%u", Value/60, Value%60);
                 runTimeRTMValueLabel->setText(pBuffer);
                 break;
             case EAPI_ID_HWMON_CPU_TEMP:
