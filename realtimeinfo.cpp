@@ -377,7 +377,7 @@ void realtimeInfo::fill(void)
                 bootRTMValueLabel->setText(pBuffer);
                 break;
             case EAPI_ID_BOARD_RUNNING_TIME_METER_VAL:
-                snprintf(pBuffer, pBufferLen,"%u:%u", Value/60, Value%60);
+                snprintf(pBuffer, pBufferLen,"%d:%02d", Value/60, Value%60);
                 runTimeRTMValueLabel->setText(pBuffer);
                 break;
             case EAPI_ID_HWMON_CPU_TEMP:
