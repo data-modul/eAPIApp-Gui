@@ -1,9 +1,8 @@
 #include <QApplication>
-#include <QMainWindow>
 #include <signal.h>
 #include <EApi.h>
 #include <QDesktopWidget>
-#include "mytabwidget.h"
+#include "mainwindow.h"
 
 void signalhandler(int sig){
     if(sig==SIGINT){
@@ -15,31 +14,24 @@ void signalhandler(int sig){
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    QMainWindow *w = new QMainWindow();
-
-
-    QRect screenGeometry = a.desktop()->screenGeometry();
 
     if(!EAPI_TEST_SUCCESS(EApiLibInitialize()))
         exit(0);
 
-    w->setWindowTitle(QString::fromUtf8("DATA MODUL EAPI Utility"));
+    MainWindow *w = new MainWindow();
+    QDesktopWidget wid;
 
-    myTabWidget *tabs = new myTabWidget(w);
-    tabs->myTabWidgetInitialize();
+    int width = w->frameGeometry().width();
+    int height = w->frameGeometry().height();
 
-    w->setCentralWidget(tabs);
+    int screenWidth = wid.screen()->width();
+    int screenHeight = wid.screen()->height();
 
-
-    int x = (screenGeometry.width()-tabs->width()) / 2;
-    int y = (screenGeometry.height()-tabs->height()) / 2;
-
-    w->move(x, y);
+    w->setGeometry((screenWidth/2)-(width/2),(screenHeight/2)-(height/2),width,height);
     w->show();
 
     signal(SIGINT, signalhandler);
     const int ret = a.exec();
     EApiLibUnInitialize();
     return ret;
-
 }

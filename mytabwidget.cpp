@@ -4,8 +4,6 @@ myTabWidget::myTabWidget(QWidget* parent)
 {
     this->setParent(parent);
     connect(this , SIGNAL(currentChanged(int)),this,SLOT(currentChangedSlot(int)));
-
-      setFixedSize(850, 650);
 }
 void myTabWidget::myTabWidgetInitialize(void)
 {
@@ -22,7 +20,7 @@ void myTabWidget::myTabWidgetInitialize(void)
     addTab(myrealtimeInfo,"System Monitor");
     setTabIcon(REALTIMEINFOTAB,QIcon(":/hw.png"));
 
-    addTab(mywatchdog,"Watchdog");
+   addTab(mywatchdog,"Watchdog");
     setTabIcon(WATCHDOGTAB,QIcon(":/whg.png"));
 
     addTab(mygpio,"GPIO");
@@ -34,30 +32,11 @@ void myTabWidget::myTabWidgetInitialize(void)
     addTab(myi2c,"I2C");
     setTabIcon(I2CTAB,QIcon(":/i2c.png"));
 
-
-
-
 }
 void myTabWidget::currentChangedSlot(int index)
 {
     if (index == REALTIMEINFOTAB)
-    {
         myrealtimeInfo->startTimer();
-
-    }
     else
-    {
         myrealtimeInfo->stopTimer();
-    }
-
-//    int i =0 ;;
-//    for (i =0 ; i < this->count();i++)
-//        if(i != index)
-//            this->widget(i)->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-
-//    this->widget(index)->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-//    this->widget(index)->resize(this->widget(index)->minimumSizeHint());
-//    this->widget(index)->adjustSize();
-//    resize(minimumSizeHint());
-//    adjustSize();
 }
