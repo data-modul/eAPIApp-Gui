@@ -7,6 +7,7 @@ const EApiId_t EApiValues[]={
     /* HW Monitoring  */
     /* Temperature  */
     EAPI_ID_HWMON_CPU_TEMP               ,
+    EAPI_ID_HWMON_CHIPSET_TEMP           ,
     EAPI_ID_HWMON_SYSTEM_TEMP            ,
     /* Voltage */
     EAPI_ID_HWMON_VOLTAGE_3V3            ,
@@ -14,7 +15,8 @@ const EApiId_t EApiValues[]={
     EAPI_ID_HWMON_VOLTAGE_5VSB           ,
     EAPI_ID_HWMON_VOLTAGE_12V            ,
     /* Fan Rotations */
-    EAPI_ID_HWMON_FAN_CPU
+    EAPI_ID_HWMON_FAN_CPU                ,
+    EAPI_ID_HWMON_FAN_SYSTEM
 };
 
 realtimeInfo::realtimeInfo(QWidget *parent)
@@ -68,6 +70,22 @@ realtimeInfo::realtimeInfo(QWidget *parent)
     cpuTempUnitLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
 
 
+    pchTempLabel  = new QLabel("PCH Temperature");
+    pchTempLabel->setFont(fontvalue);
+    pchTempLabel->setAlignment(Qt::AlignCenter);
+    pchTempLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
+
+    pchTempValueLabel  = new QLabel;
+    pchTempValueLabel->setFont(fontvalue);
+    pchTempValueLabel->setAlignment(Qt::AlignCenter);
+    pchTempValueLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
+
+    pchTempUnitLabel  = new QLabel("Celsius");
+    pchTempUnitLabel->setFont(fontvalue);
+    pchTempUnitLabel->setAlignment(Qt::AlignCenter);
+    pchTempUnitLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
+
+
     moduleTempLabel  = new QLabel("Module Temperature");
     moduleTempLabel->setFont(fontvalue);
     moduleTempLabel->setAlignment(Qt::AlignCenter);
@@ -90,6 +108,12 @@ realtimeInfo::realtimeInfo(QWidget *parent)
     cpuTemplayout->addWidget(cpuTempValueLabel);
     cpuTemplayout->addWidget(cpuTempUnitLabel);
 
+    pchTemplayout=new QHBoxLayout;
+    pchTemplayout->setSpacing(50);
+    pchTemplayout->addWidget(pchTempLabel);
+    pchTemplayout->addWidget(pchTempValueLabel);
+    pchTemplayout->addWidget(pchTempUnitLabel);
+
     moduleTemplayout=new QHBoxLayout;
     moduleTemplayout->setSpacing(50);
     moduleTemplayout->addWidget(moduleTempLabel);
@@ -98,6 +122,7 @@ realtimeInfo::realtimeInfo(QWidget *parent)
 
     tempLayout = new QVBoxLayout;
     tempLayout->addLayout(cpuTemplayout);
+    tempLayout->addLayout(pchTemplayout);
     tempLayout->addLayout(moduleTemplayout);
 
     groupTemp = new QGroupBox("Temperature Sensors");
@@ -206,31 +231,56 @@ realtimeInfo::realtimeInfo(QWidget *parent)
     groupVoltage->setLayout(voltageLayout);
 
     /************* FAN *******************************************/
-    fanLabel  = new QLabel("Carrier Fan");
-    fanLabel->setFont(fontvalue);
-    fanLabel->setAlignment(Qt::AlignCenter);
-    fanLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
+    cpufanLabel  = new QLabel("CPU Fan");
+    cpufanLabel->setFont(fontvalue);
+    cpufanLabel->setAlignment(Qt::AlignCenter);
+    cpufanLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
 
-    fanValueLabel  = new QLabel;
-    fanValueLabel->setFont(fontvalue);
-    fanValueLabel->setAlignment(Qt::AlignCenter);
-    fanValueLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
+    cpufanValueLabel  = new QLabel;
+    cpufanValueLabel->setFont(fontvalue);
+    cpufanValueLabel->setAlignment(Qt::AlignCenter);
+    cpufanValueLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
 
-    fanUnitLabel  = new QLabel("RPM");
-    fanUnitLabel->setFont(fontvalue);
-    fanUnitLabel->setAlignment(Qt::AlignCenter);
-    fanUnitLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
+    cpufanUnitLabel  = new QLabel("RPM");
+    cpufanUnitLabel->setFont(fontvalue);
+    cpufanUnitLabel->setAlignment(Qt::AlignCenter);
+    cpufanUnitLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
 
 
-    fanlayout=new QHBoxLayout;
-    fanlayout->setSpacing(50);
-    fanlayout->addWidget(fanLabel);
-    fanlayout->addWidget(fanValueLabel);
-    fanlayout->addWidget(fanUnitLabel);
+    cpufanlayout=new QHBoxLayout;
+    cpufanlayout->setSpacing(50);
+    cpufanlayout->addWidget(cpufanLabel);
+    cpufanlayout->addWidget(cpufanValueLabel);
+    cpufanlayout->addWidget(cpufanUnitLabel);
+
+    sysfanLabel  = new QLabel("Carrier Fan");
+    sysfanLabel->setFont(fontvalue);
+    sysfanLabel->setAlignment(Qt::AlignCenter);
+    sysfanLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
+
+    sysfanValueLabel  = new QLabel;
+    sysfanValueLabel->setFont(fontvalue);
+    sysfanValueLabel->setAlignment(Qt::AlignCenter);
+    sysfanValueLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
+
+    sysfanUnitLabel  = new QLabel("RPM");
+    sysfanUnitLabel->setFont(fontvalue);
+    sysfanUnitLabel->setAlignment(Qt::AlignCenter);
+    sysfanUnitLabel->setStyleSheet("QLabel { background-color : white; color : #143850; border: 1px solid white }");
+
+    sysfanlayout=new QHBoxLayout;
+    sysfanlayout->setSpacing(50);
+    sysfanlayout->addWidget(sysfanLabel);
+    sysfanlayout->addWidget(sysfanValueLabel);
+    sysfanlayout->addWidget(sysfanUnitLabel);
+
+    fanLayout = new QVBoxLayout;
+    fanLayout->addLayout(cpufanlayout);
+    fanLayout->addLayout(sysfanlayout);
 
     groupFan = new QGroupBox("Fan Sensors");
     groupFan->setFont(fontlabel);
-    groupFan->setLayout(fanlayout);
+    groupFan->setLayout(fanLayout);
 
 
     /**************** RTM ****************************************/
@@ -385,6 +435,11 @@ void realtimeInfo::fill(void)
                 snprintf(pBuffer, pBufferLen,"%u.%u", ((int32_t)Value)/10,Value%10);
                 cpuTempValueLabel->setText(pBuffer);
                 break;
+            case EAPI_ID_HWMON_CHIPSET_TEMP:
+                Value-=EAPI_KELVINS_OFFSET;
+                snprintf(pBuffer, pBufferLen,"%u.%u", ((int32_t)Value)/10,Value%10);
+                pchTempValueLabel->setText(pBuffer);
+                break;
             case EAPI_ID_HWMON_SYSTEM_TEMP:
                 Value-=EAPI_KELVINS_OFFSET;
                 snprintf(pBuffer, pBufferLen,"%u.%u",((int32_t)Value)/10, Value%10);
@@ -412,7 +467,11 @@ void realtimeInfo::fill(void)
                 break;
             case EAPI_ID_HWMON_FAN_CPU:
                 snprintf(pBuffer, pBufferLen,"%u",Value);
-                fanValueLabel->setText(pBuffer);
+                cpufanValueLabel->setText(pBuffer);
+                break;
+            case EAPI_ID_HWMON_FAN_SYSTEM:
+                snprintf(pBuffer, pBufferLen,"%u",Value);
+                sysfanValueLabel->setText(pBuffer);
                 break;
             }
         }
@@ -428,6 +487,9 @@ void realtimeInfo::fill(void)
                 break;
             case EAPI_ID_HWMON_CPU_TEMP:
                 cpuTempValueLabel->setText("Unsupported");
+                break;
+            case EAPI_ID_HWMON_CHIPSET_TEMP:
+                pchTempValueLabel->setText("Unsupported");
                 break;
             case EAPI_ID_HWMON_SYSTEM_TEMP:
                 moduleTempValueLabel->setText("Unsupported");
@@ -445,7 +507,10 @@ void realtimeInfo::fill(void)
                 inputVoltageValueLabel->setText("Unsupported");
                 break;
             case EAPI_ID_HWMON_FAN_CPU:
-                fanValueLabel->setText("Unsupported");
+                cpufanValueLabel->setText("Unsupported");
+                break;
+            case EAPI_ID_HWMON_FAN_SYSTEM:
+                sysfanValueLabel->setText("Unsupported");
                 break;
             }
         }

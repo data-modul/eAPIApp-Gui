@@ -34,10 +34,14 @@ private:
     QLabel *cpuTempLabel ;
     QLabel *cpuTempValueLabel;
     QLabel *cpuTempUnitLabel;
+    QLabel *pchTempLabel;
+    QLabel *pchTempValueLabel;
+    QLabel *pchTempUnitLabel;
     QLabel *moduleTempLabel;
     QLabel *moduleTempValueLabel;
     QLabel *moduleTempUnitLabel;
     QHBoxLayout* cpuTemplayout;
+    QHBoxLayout* pchTemplayout;
     QHBoxLayout* moduleTemplayout;
 
     QLabel *s0VoltageLabel;
@@ -57,10 +61,14 @@ private:
     QLabel *inputVoltageUnitLabel;
     QHBoxLayout* inputVoltagelayout;
 
-    QLabel *fanLabel;
-    QLabel *fanValueLabel;
-    QLabel *fanUnitLabel;
-    QHBoxLayout* fanlayout;
+    QLabel *cpufanLabel;
+    QLabel *cpufanValueLabel;
+    QLabel *cpufanUnitLabel;
+    QHBoxLayout* cpufanlayout;
+    QLabel *sysfanLabel;
+    QLabel *sysfanValueLabel;
+    QLabel *sysfanUnitLabel;
+    QHBoxLayout* sysfanlayout;
 
     QLabel *bootRTMLabel;
     QLabel *bootRTMValueLabel;
@@ -79,6 +87,7 @@ private:
 
     QVBoxLayout *tempLayout;
     QVBoxLayout *voltageLayout;
+    QVBoxLayout *fanLayout;
     QVBoxLayout *rtmLayout;
     QVBoxLayout *brightnessLayout;
 
