@@ -9,6 +9,7 @@ storage::storage(QWidget *parent)
     fontlabel.setPointSize(11);
 
     QFont fontvalue;
+    fontvalue.setBold(false);
     fontvalue.setPointSize(11);
 
     EApiStatus_t StatusCode = EAPI_STATUS_SUCCESS;
@@ -20,7 +21,6 @@ storage::storage(QWidget *parent)
 
     storageSize = new QLabel;
     storageSize->setFont(fontvalue);
-    storageSize->setStyleSheet("QLabel { color : black; }");
 
     storageType = new QLabel;
     storageType->setText( "<span style='font-size:11pt; font-weight:600; color:black;'>Selected Area: </span><span style='font-size:11pt; font-weight:normal; color:black;'>Standard Storage Area</span>" );
@@ -48,13 +48,10 @@ storage::storage(QWidget *parent)
     /*************************************************/
     bytegrid = new QGridLayout;
 
-
     offsetLabel = new QLabel("Offset:");
     offsetLabel->setFont(fontlabel);
-    offsetLabel->setStyleSheet("QLabel { color : black; }");
 
     offsetValue = new QLineEdit("0");
-    offsetValue->setStyleSheet("QLabel { color : black; }");
     offsetValue->setFont(fontvalue);
     offsetValue->setFixedWidth(50);
 
@@ -71,7 +68,6 @@ storage::storage(QWidget *parent)
     lengthLabel->setText(temp);
 
     lengthValue = new QLineEdit("0");
-    lengthValue->setStyleSheet("QLabel { color : black; }");
     lengthValue->setFont(fontvalue);
     lengthValue->setFixedWidth(50);
 
@@ -85,13 +81,10 @@ storage::storage(QWidget *parent)
 
     writeValue = new QTextEdit;
     writeValue->setFont(fontvalue);
-    writeValue->setStyleSheet("QLabel { color : black; }");
     connect(writeValue, SIGNAL(textChanged()), this, SLOT(getInput()));
 
     writeButton = new QPushButton("Write");
     connect( writeButton, SIGNAL( clicked() ), this, SLOT( writeClicked() ) );
-    if (definedStorage == false)
-        writeButton->setEnabled(false);
 
     bytegrid->addWidget(writeLabel,3,0);
     bytegrid->addWidget(writeValue,3,1);
@@ -105,8 +98,6 @@ storage::storage(QWidget *parent)
     readValue->setReadOnly(true);
 
     readButton = new QPushButton("Read");
-    if (definedStorage == false)
-        readButton->setEnabled(false);
     connect( readButton, SIGNAL( clicked() ), this, SLOT( readClicked() ) );
 
     bytegrid->addWidget(readLabel,4,0);
@@ -118,6 +109,9 @@ storage::storage(QWidget *parent)
     byteGroup->setFont(fontlabel);
     byteGroup->setLayout(bytegrid);
 
+    if (definedStorage == false)
+        byteGroup->setEnabled(false);
+
     grid = new QGridLayout;
     grid->addWidget(infoGroup,0,0,1,2);
     grid->addWidget(byteGroup,1,0,1,2);
@@ -125,42 +119,37 @@ storage::storage(QWidget *parent)
 }
 void storage::readClicked()
 {
-    char *TmpStrBuf;
+    uint8_t *TmpStrBuf;
 
     EApiStatus_t StatusCode = EAPI_STATUS_SUCCESS;
 
-    if (definedStorage)
+    TmpStrBuf = (uint8_t*) malloc(sizeof(uint8_t)*(pStorgeSize+1));
+
+    StatusCode=EApiStorageAreaRead(EAPI_ID_STORAGE_STD,offset,TmpStrBuf,pStorgeSize, length);
+    if(EAPI_TEST_SUCCESS(StatusCode))
     {
-        TmpStrBuf = (char*) malloc(sizeof(char)*(pStorgeSize+1));
+        QString tokens;
+        for(unsigned int i = 0; i < length ;i ++) {
+            uint8_t value = TmpStrBuf[i] / 16;
+            if (value ==0 || value <=9)
+                tokens.append(48+value);
+            else
+                tokens.append(65+(value%10));
 
-        StatusCode=EApiStorageAreaRead(EAPI_ID_STORAGE_STD,offset,TmpStrBuf,pStorgeSize, length);
-        if(EAPI_TEST_SUCCESS(StatusCode))
-        {
-            QString tokens;
-            for(unsigned int i = 0; i < length ;i ++) {
-                uint8_t value = TmpStrBuf[i] / 16;
-                if (value ==0 || value <=9)
-                    tokens.append(48+value);
-                else
-                    tokens.append(65+(value%10));
+            value = TmpStrBuf[i] % 16;
+            if (value ==0 || value <=9)
+                tokens.append(48+value);
+            else
+                tokens.append(65+(value%10));
 
-                value = TmpStrBuf[i] % 16;
-                if (value ==0 || value <=9)
-                    tokens.append(48+value);
-                else
-                    tokens.append(65+(value%10));
-
-                tokens.append(" ");
-            }
-            readValue->setText(tokens);
+            tokens.append(" ");
         }
-        else
-            readValue->setText("Error!");
-
-        free(TmpStrBuf);
+        readValue->setText(tokens);
     }
     else
-        readValue->setText("Error! No defined user storage area!");
+        readValue->setText("Error!");
+
+    free(TmpStrBuf);
 }
 void storage::writeClicked()
 {

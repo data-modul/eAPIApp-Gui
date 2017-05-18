@@ -1,10 +1,10 @@
-#include "circlewidget.h"
+#include "temperatureBar.h"
 
 #include <QPainter>
 
 #include <stdlib.h>
 
-CircleWidget::CircleWidget(QWidget *parent)
+TemperatureBar::TemperatureBar(QWidget *parent)
     : QWidget(parent)
 {
     floatBased = false;
@@ -14,37 +14,37 @@ diameter = 0;
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
 
-void CircleWidget::setFloatBased(bool floatBased)
+void TemperatureBar::setFloatBased(bool floatBased)
 {
     this->floatBased = floatBased;
     update();
 }
 
-void CircleWidget::setAntialiased(bool antialiased)
+void TemperatureBar::setAntialiased(bool antialiased)
 {
     this->antialiased = antialiased;
     update();
 }
 
-QSize CircleWidget::minimumSizeHint() const
+QSize TemperatureBar::minimumSizeHint() const
 {
     return QSize(50, 50);
 }
 
-QSize CircleWidget::sizeHint() const
+QSize TemperatureBar::sizeHint() const
 {
     return QSize(180, 180);
 }
 
-void CircleWidget::nextAnimationFrame()
+void TemperatureBar::nextAnimationFrame()
 {
     update();
 }
-void CircleWidget::setDiameter(int d)
+void TemperatureBar::setDiameter(int d)
 {
     diameter = d;
 }
-void CircleWidget::paintEvent(QPaintEvent *)
+void TemperatureBar::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing, antialiased);

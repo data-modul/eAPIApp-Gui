@@ -1,15 +1,15 @@
-#ifndef CIRCLEWIDGET_H
-#define CIRCLEWIDGET_H
+#ifndef TEMPERATUREBAR_H
+#define TEMPERATUREBAR_H
 
 
 #include <QWidget>
 
-class CircleWidget : public QWidget
+class TemperatureBar : public QWidget
 {
     Q_OBJECT
 
 public:
-    CircleWidget(QWidget *parent = 0);
+    TemperatureBar(QWidget *parent = 0);
 
     void setFloatBased(bool floatBased);
     void setAntialiased(bool antialiased);
@@ -30,4 +30,4 @@ private:
     int diameter;
 };
 
-#endif // CIRCLEWIDGET_H
+#endif // TEMPERATUREBAR_H

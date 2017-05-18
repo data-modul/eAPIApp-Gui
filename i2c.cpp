@@ -15,21 +15,29 @@ i2c::i2c(QWidget *parent)
     fontlabel.setPointSize(11);
 
     QFont fontvalue;
+    fontvalue.setBold(false);
     fontvalue.setPointSize(11);
+
+    QFont smallfontvalue;
+    smallfontvalue.setBold(false);
+    smallfontvalue.setPointSize(9);
 
     timer = new QTimer(this);
 
+    int tempresult =  find_eeprom();
+    if (tempresult == -1 )
+        base_addr = 0;
+    else
+        base_addr = tempresult;
+
     readWriteByteRadioButton = new QRadioButton("Read/Write Register");
     readWriteByteRadioButton->setFont(fontvalue);
-    readWriteByteRadioButton->setStyleSheet("QLabel { color : black; }");
 
     readWriteBlockRadioButton = new QRadioButton("Read/Write Continuous");
     readWriteBlockRadioButton->setFont(fontvalue);
-    readWriteBlockRadioButton->setStyleSheet("QLabel { color : black; }");
 
     readWriteCombineRadioButton = new QRadioButton("Write Read Raw");
     readWriteCombineRadioButton->setFont(fontvalue);
-    readWriteCombineRadioButton->setStyleSheet("QLabel { color : black; }");
 
     readWriteByteRadioButton->setChecked(1);
     protocol = 0; /*0: register, 1:block, 2:raw */
@@ -47,43 +55,37 @@ i2c::i2c(QWidget *parent)
     protocolGroup->setFont(fontlabel);
     protocolGroup->setLayout(protocolLayout);
 
+    if (base_addr == 0) /* no i2c*/
+        protocolGroup->setEnabled(false);
     /*************************************************/
 
     i2cIDLabel = new QLabel("I2C Select:");
-    i2cIDLabel->setFont(fontlabel);
-    i2cIDLabel->setStyleSheet("QLabel { color : black; }");
+    i2cIDLabel->setFont(fontvalue);
 
     i2cID = new QComboBox;
-    int tempresult =  find_eeprom();
-    if (tempresult == -1 )
-        base_addr = 0;
-    else
-        base_addr = tempresult;
-
     i2cID->setFont(fontvalue);
-    i2cID->setStyleSheet("QComboBox { color : black; }");
-    i2cID->addItem(QString::number(base_addr));
-    i2cID->addItem(QString::number(base_addr+1));
-    i2cID->addItem(QString::number(base_addr+2));
 
     if (base_addr == 0) /* no i2c*/
     {
-         i2cIDLabel->setStyleSheet("QLabel { color : red; }");
-        i2cID->setEnabled(false);
+         i2cIDLabel->setStyleSheet("color : red");
+         i2cID->addItem("-");
+    }
+    else
+    {
+        i2cID->addItem(QString::number(base_addr));
+        i2cID->addItem(QString::number(base_addr+1));
+        i2cID->addItem(QString::number(base_addr+2));
     }
 
     i2cBus = base_addr;
-
     connect(i2cID , SIGNAL(currentIndexChanged(int)),this,SLOT(handleI2CselectionChanged(int)));
 
     slaveLabel = new QLabel("Slave Address(Hex, ex. A5):");
-    slaveLabel->setFont(fontlabel);
-    slaveLabel->setStyleSheet("QLabel { color : black; }");
+    slaveLabel->setFont(fontvalue);
 
     slaveValue = new QLineEdit;
-    slaveValue->setInputMask("HH");
-    slaveValue->setStyleSheet("QLabel { color : black; }");
     slaveValue->setFont(fontvalue);
+    slaveValue->setInputMask("HH");
     slaveValue->setText("00");
     slave = 0;
 
@@ -103,31 +105,30 @@ i2c::i2c(QWidget *parent)
     deviceGroup->setFont(fontlabel);
     deviceGroup->setLayout(deviceLayout);
 
+    if (base_addr == 0) /* no i2c*/
+        deviceGroup->setEnabled(false);
+
     /***********************************************/
     parameterGrid = new QGridLayout;
 
-    offsetLabel = new QLabel("Reg-Offset:");
-    offsetLabel->setFont(fontlabel);
-    offsetLabel->setStyleSheet("QLabel { color : black; }");
+    offsetLabel = new QLabel;
+    offsetLabel->setText("Reg-Offset:");
+    offsetLabel->setFont(smallfontvalue);
 
     offsetValue = new QLineEdit("0");
-    offsetValue->setStyleSheet("QLabel { color : black; }");
-    offsetValue->setFont(fontvalue);
+    offsetValue->setFont(smallfontvalue);
 
     connect(offsetValue, SIGNAL(textChanged(QString)), this, SLOT(offsetChanged(QString)));
     offset =0;
 
     offsetTypeLabel = new QLabel("Offset Type:");
-    offsetTypeLabel->setFont(fontlabel);
-    offsetTypeLabel->setStyleSheet("QLabel { color : black; }");
+    offsetTypeLabel->setFont(smallfontvalue);
 
     byteRadioButton = new QRadioButton("byte");
-    byteRadioButton->setFont(fontvalue);
-    byteRadioButton->setStyleSheet("QLabel { color : black; }");
+    byteRadioButton->setFont(smallfontvalue);
 
     wordRadioButton = new QRadioButton("word");
-    wordRadioButton->setFont(fontvalue);
-    wordRadioButton->setStyleSheet("QLabel { color : black; }");
+    wordRadioButton->setFont(smallfontvalue);
 
     connect( byteRadioButton, SIGNAL( toggled(bool) ), this, SLOT( byteRadioButtonClicked(bool) ) );
     connect( wordRadioButton, SIGNAL( toggled(bool) ), this, SLOT( wordRadioButtonClicked(bool) ) );
@@ -143,10 +144,10 @@ i2c::i2c(QWidget *parent)
 
     readlengthLabel = new QLabel;
     readlengthLabel->setText("R-Length");
+    readlengthLabel->setFont(smallfontvalue);
 
     readlengthValue = new QLineEdit("0");
-    readlengthValue->setStyleSheet("QLabel { color : black; }");
-    readlengthValue->setFont(fontvalue);
+    readlengthValue->setFont(smallfontvalue);
 
     connect(readlengthValue, SIGNAL(textChanged(QString)), this, SLOT(readlengthChanged(QString)));
     readlength = 0;
@@ -154,13 +155,12 @@ i2c::i2c(QWidget *parent)
     parameterGrid->addWidget(readlengthLabel,3,0);
     parameterGrid->addWidget(readlengthValue,3,1);
 
-
     writelengthLabel = new QLabel;
     writelengthLabel->setText("W-Length");
+    writelengthLabel->setFont(smallfontvalue);
 
     writelengthValue = new QLineEdit("0");
-    writelengthValue->setStyleSheet("QLabel { color : black; }");
-    writelengthValue->setFont(fontvalue);
+    writelengthValue->setFont(smallfontvalue);
 
     connect(writelengthValue, SIGNAL(textChanged(QString)), this, SLOT(writelengthChanged(QString)));
     writelength = 0;
@@ -169,16 +169,17 @@ i2c::i2c(QWidget *parent)
     parameterGrid->addWidget(writelengthValue,3,3);
 
     timingCheckbox = new QCheckBox("W-Cycle(0.005 sec)");
+    timingCheckbox->setFont(smallfontvalue);
     parameterGrid->addWidget(timingCheckbox,3,4);
     timingCheckbox->setChecked(false);
     timing = false;
     connect(timingCheckbox, SIGNAL(clicked(bool)), this, SLOT(timingSelected(bool)));
 
     writeLabel = new QLabel("Write(Hex):");
+    writeLabel->setFont(fontvalue);
 
     writeValue = new QTextEdit;
     writeValue->setFont(fontvalue);
-    writeValue->setStyleSheet("QLabel { color : black; }");
     connect(writeValue, SIGNAL(textChanged()), this, SLOT(getInput()));
 
     writeButton = new QPushButton("Write");
@@ -193,14 +194,14 @@ i2c::i2c(QWidget *parent)
     parameterGrid->addWidget(writeButton,5,4);
 
     readLabel = new QLabel("Read(Hex):");
+    readLabel->setFont(fontvalue);
 
     readValue = new QTextEdit();
     readValue->setFont(fontvalue);
-    readValue->setStyleSheet("QTextEdit { background-color: #BDD8CA; color : black; }");
+    readValue->setStyleSheet("background-color: #BDD8CA; color : black");
     readValue->setReadOnly(true);
 
     readButton = new QPushButton("Read");
-    // readButton->setEnabled(false);
     connect( readButton, SIGNAL( clicked() ), this, SLOT( readClicked() ) );
 
     parameterGrid->addWidget(readLabel,6,0);
@@ -212,29 +213,46 @@ i2c::i2c(QWidget *parent)
     controlGroup->setFont(fontlabel);
     controlGroup->setLayout(parameterGrid);
 
+     if (base_addr == 0) /* no i2c*/
+         controlGroup->setEnabled(false);
+
     /******************************************************/
     temperatureButton = new QPushButton("Temperature");
 
-    circlewidget = new CircleWidget;
-    circlewidget->setAntialiased(true);
-    circlewidget->setFloatBased(false);
+    temperaturebar = new TemperatureBar;
+    temperaturebar->setAntialiased(true);
+    temperaturebar->setFloatBased(false);
 
     connect( temperatureButton, SIGNAL( clicked() ), this, SLOT( temperatureClicked() ) );
     connect(timer, SIGNAL(timeout()), this, SLOT(timeoutTimer()));
 
+
+    unsigned char TmpStrBuf;
+    EApiStatus_t StatusCode;
+    StatusCode=EApiI2CReadTransfer(base_addr, 0x48, EAPI_I2C_ENC_STD_CMD(0),&TmpStrBuf, 1, 1);
+
+    if(EAPI_TEST_SUCCESS(StatusCode))
+        temperatureButton->setEnabled(true);
+    else
+        temperatureButton->setEnabled(false);
+
     demoGrid = new QGridLayout;
     demoGrid->addWidget(temperatureButton,1,0);
-    demoGrid->addWidget(circlewidget, 2, 0);
+    demoGrid->addWidget(temperaturebar, 2, 0);
 
     demoGroup = new QGroupBox("Demo");
     demoGroup->setFont(fontlabel);
     demoGroup->setLayout(demoGrid);
+
+     if (base_addr == 0) /* no i2c*/
+         demoGroup->setEnabled(false);
 
     grid = new QGridLayout;
     grid->addWidget(protocolGroup,1,0);
     grid->addWidget(deviceGroup,1,1);
     grid->addWidget(controlGroup,2,0);
     grid->addWidget(demoGroup,2,1);
+
     setLayout(grid);
 }
 void i2c::readWriteByteRadioButtonClicked(bool checked)
@@ -562,7 +580,7 @@ void i2c::temperatureClicked()
     else
     {
         temperatureButton->setText("Temperature");
-        circlewidget->setDiameter(0);
+        temperaturebar->setDiameter(0);
         timer->stop();
     }
 }
@@ -574,10 +592,10 @@ void i2c::timeoutTimer()
 
     if(EAPI_TEST_SUCCESS(StatusCode))
     {
-        circlewidget->setDiameter((int)TmpStrBuf);
+        temperaturebar->setDiameter((int)TmpStrBuf);
     }
     else
-        circlewidget->setDiameter(0);
+        temperaturebar->setDiameter(0);
     update();
 }
 void i2c::getInput()

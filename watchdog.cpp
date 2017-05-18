@@ -15,6 +15,7 @@ watchdog::watchdog(QWidget *parent)
     fontlabel.setPointSize(11);
 
     QFont fontvalue;
+    fontvalue.setBold(false);
     fontvalue.setPointSize(11);
 
     timer = new QTimer();
@@ -23,17 +24,21 @@ watchdog::watchdog(QWidget *parent)
     remainedTimer = new QTimer();
     connect(remainedTimer, SIGNAL(timeout()), this, SLOT(timeoutRemainedTimer()));
 
+    EApiStatus_t StatusCode;
+    StatusCode = EApiWDogGetCap(&maxDelay, &maxeventTimeout, &maxResetTimeout);
+    if (StatusCode == EAPI_STATUS_UNSUPPORTED )
+        wdtdetect = false;
+    else
+        wdtdetect = true;
+
     modes = new QLabel("Modes:");
     modes->setFont(fontvalue);
-    modes->setStyleSheet("QLabel { color : black; }");
 
     singlestage = new QRadioButton("Single stage");
     singlestage->setFont(fontvalue);
-    singlestage->setStyleSheet("QLabel { color : black; }");
 
     multistages = new QRadioButton("Multi Stages");
     multistages->setFont(fontvalue);
-    multistages->setStyleSheet("QLabel { color : black; }");
 
     singlestage->setChecked(1);
     multiMode = false;
@@ -49,22 +54,24 @@ watchdog::watchdog(QWidget *parent)
     modeGroup->setFont(fontlabel);
     modeGroup->setLayout(modeLayout);
 
+    if (wdtdetect == false)
+        modeGroup->setEnabled(false);
+
     /******/
-    EApiWDogGetCap(&maxDelay, &maxeventTimeout, &maxResetTimeout);
     maxeventTimeout = maxeventTimeout / 1000;
     maxResetTimeout = maxResetTimeout /1000;
 
     char temp[50];
     sprintf(temp,"Event Timeout in sec(max:%d):",maxeventTimeout);
     preTimeoutLabel = new QLabel(temp);
-    preTimeoutLabel->setStyleSheet("QLabel { color : black; }");
+    preTimeoutLabel->setFont(fontvalue);
     pretimeoutValue = new QLineEdit;
-     pretimeoutValue->setStyleSheet("QLabel { color : black; }");
     pretimeoutValue->setFixedWidth(100);
+    pretimeoutValue->setFont(fontvalue);
     QValidator *validatorPre = new QIntValidator(0, maxeventTimeout, this);
     pretimeoutValue->setValidator(validatorPre);
     preTimeoutRequiredLabel = new QLabel;
-    preTimeoutRequiredLabel->setStyleSheet("QLabel { color : black; }");
+    preTimeoutRequiredLabel->setFont(fontvalue);
 
     connect(pretimeoutValue, SIGNAL(textChanged(QString)), this, SLOT(setPreTimeout(QString)));
 
@@ -75,14 +82,14 @@ watchdog::watchdog(QWidget *parent)
 
     sprintf(temp,"Reset Timeout in sec(max:%d):",maxResetTimeout);
     timeoutLabel = new QLabel(temp);
-    timeoutLabel->setStyleSheet("QLabel { color : black; }");
+    timeoutLabel->setFont(fontvalue);
     timeoutValue = new QLineEdit;
-    timeoutValue->setStyleSheet("QLabel { color : black; }");
     timeoutValue->setFixedWidth(100);
+    timeoutValue->setFont(fontvalue);
     QValidator *validator = new QIntValidator(0, maxResetTimeout, this);
     timeoutValue->setValidator(validator);
     timeoutRequiredLabel = new QLabel("*required");
-    timeoutRequiredLabel->setStyleSheet("QLabel { color : black; }");
+    timeoutRequiredLabel->setFont(fontvalue);
 
     connect(timeoutValue, SIGNAL(textChanged(QString)), this, SLOT(setTimeout(QString)));
 
@@ -98,11 +105,16 @@ watchdog::watchdog(QWidget *parent)
     timeGroup = new QGroupBox("Timeout Configuration");
     timeGroup->setFont(fontlabel);
     timeGroup->setLayout(timeLayout);
+
+    if (wdtdetect == false)
+        timeGroup->setEnabled(false);
+
     /******/
     output = new QLabel();
-    output->setStyleSheet("QLabel { color : black; }");
+    output->setFont(fontvalue);
+
     outputRemainedTime = new QLabel();
-    outputRemainedTime->setStyleSheet("QLabel { color : black; }");
+    outputRemainedTime->setFont(fontvalue);
 
     whgpicture = new QLabel;
     QPixmap pixmap(":/final-justdog-trans.png");
@@ -122,6 +134,9 @@ watchdog::watchdog(QWidget *parent)
     outputGroup->setFont(fontlabel);
     outputGroup->setLayout(outputLayout);
 
+    if (wdtdetect == false)
+        outputGroup->setEnabled(false);
+
     /*******/
     start = new QPushButton("Start");
     connect( start, SIGNAL( clicked() ), this, SLOT( startClicked() ) );
@@ -132,7 +147,14 @@ watchdog::watchdog(QWidget *parent)
     stopTrigger = new QPushButton("Stop Triggering");
     connect( stopTrigger, SIGNAL( clicked() ), this, SLOT( stopTriggerClicked() ) );
 
-    startEnable();
+    if (wdtdetect == false)
+    {
+        start->setEnabled(false);
+        stop->setEnabled(false);
+        stopTrigger->setEnabled(false);
+    }
+    else
+        startEnable();
 
     actionlayout=new QHBoxLayout;
     actionlayout->setSpacing(50);
@@ -204,8 +226,8 @@ void watchdog::startClicked()
         timer->start(ping*1000);
         count = 1;
         char temp[50];
-       sprintf(temp,"%d sec remains to next trigger",timer->remainingTime() /1000);
-       outputRemainedTime->setText(temp);
+        sprintf(temp,"%d sec remains to next trigger",timer->remainingTime() /1000);
+        outputRemainedTime->setText(temp);
 
         remainedTimer->start(1000);
         output->setText("Watchdog is started. Triggering...");
@@ -225,7 +247,7 @@ void watchdog::stopTriggerClicked()
 {
     timer->stop();
     remainedTimer->stop();
-   outputRemainedTime->setText("");
+    outputRemainedTime->setText("");
     output->setText("Triggering is stopped, system is going to reboot after timeout");
 }
 void watchdog::timeoutTimer()

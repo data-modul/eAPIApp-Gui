@@ -34,6 +34,7 @@ private:
     unsigned int preTimeout;
     unsigned int timeout;
     int count;
+    bool wdtdetect;
 
     QLabel *modes;
     QRadioButton *singlestage;

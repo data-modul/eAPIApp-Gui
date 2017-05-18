@@ -1,3 +1,4 @@
+
 #include "gpio.h"
 #include <unistd.h>
 #include <EApi.h>
@@ -22,10 +23,19 @@ gpio::gpio(QWidget *parent)
     fontlabel.setPointSize(11);
 
     QFont fontvalue;
+    fontvalue.setBold(false);
     fontvalue.setPointSize(11);
 
     timer = new QTimer();
     connect(timer, SIGNAL(timeout()), this, SLOT(timeoutTimer()));
+
+    EApiStatus_t StatusCode;
+    uint32_t input, output;
+    StatusCode = EApiGPIOGetDirectionCaps(0, &input, &output);
+    if (StatusCode == EAPI_STATUS_UNSUPPORTED && input == 0x00 && output == 0x00)
+        gpiodetect = false;
+    else
+        gpiodetect = true;
 
     int i = 0;
     width = 30;
@@ -34,7 +44,6 @@ gpio::gpio(QWidget *parent)
 
     pinCounts = new QLabel("Pin Count: 8");
     pinCounts->setFont(fontlabel);
-    pinCounts->setStyleSheet("QLabel { color : black; }");
 
     for (i = 0 ; i<8 ; i++)
     {
@@ -42,11 +51,9 @@ gpio::gpio(QWidget *parent)
         sprintf(temp,"GPIO 0%d",i);
         gpioList[i] = new QRadioButton(temp);
         gpioList[i]->setFont(fontvalue);
-        gpioList[i]->setStyleSheet("QLabel { color : black; }");
     }
     gpioBank00 = new QRadioButton("GPIO Bank00");
     gpioBank00->setFont(fontvalue);
-    gpioBank00->setStyleSheet("QLabel { color : black; }");
 
     gpioList[0]->setChecked(1);
     mask = 0x01;
@@ -108,11 +115,13 @@ gpio::gpio(QWidget *parent)
     deviceGroup->setFont(fontlabel);
     deviceGroup->setLayout(deviceLayout);
 
+    if (gpiodetect == false)
+        deviceGroup->setEnabled(false);
+
     /*******************************************/
 
     directionLabel = new QLabel("Direction:");
     directionLabel->setFont(fontvalue);
-    directionLabel->setStyleSheet("QLabel { color : black; }");
 
     inOutButton = new QPushButton("INPUT");
     inOutButton->setFont(fontlabel);
@@ -124,7 +133,6 @@ gpio::gpio(QWidget *parent)
 
     valueLabel = new QLabel("Level(value):");
     valueLabel->setFont(fontvalue);
-    valueLabel->setStyleSheet("QLabel { color : black; }");
 
     highLowButton = new QPushButton("HIGH");
     highLowButton->setFont(fontlabel);
@@ -166,6 +174,9 @@ gpio::gpio(QWidget *parent)
     actionGroup = new QGroupBox("Action");
     actionGroup->setFont(fontlabel);
     actionGroup->setLayout(actionLayout);
+
+    if (gpiodetect == false)
+        actionGroup->setEnabled(false);
 
     /*****************************************/
 
@@ -216,7 +227,7 @@ gpio::gpio(QWidget *parent)
 
     errorLabel = new QLabel;
     errorLabel->setFont(fontvalue);
-    errorLabel->setStyleSheet("QLabel { color : red; }");
+    errorLabel->setStyleSheet("color : red");
 
     statusLayout=new QVBoxLayout;
     statusLayout->addLayout(pinNumberLayout);
@@ -227,6 +238,9 @@ gpio::gpio(QWidget *parent)
     statusGroup = new QGroupBox("Status");
     statusGroup->setFont(fontlabel);
     statusGroup->setLayout(statusLayout);
+
+    if (gpiodetect == false)
+        statusGroup->setEnabled(false);
 
     /***********************************/
 

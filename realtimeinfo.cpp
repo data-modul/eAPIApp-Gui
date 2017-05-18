@@ -30,6 +30,7 @@ realtimeInfo::realtimeInfo(QWidget *parent)
     fontlabel.setPointSize(11);
 
     QFont fontvalue;
+    fontvalue.setBold(false);
     fontvalue.setPointSize(11);
 
     sensorLabel  = new QLabel("Sensor");

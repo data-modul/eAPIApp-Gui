@@ -15,7 +15,7 @@
 #include <QCheckBox>
 #include <QPlainTextEdit>
 
-#include "circlewidget.h"
+#include "temperatureBar.h"
 
 struct i2c_adap {
     int nr;
@@ -119,7 +119,7 @@ private:
 
     QGridLayout *grid;
 
-    CircleWidget *circlewidget;
+    TemperatureBar *temperaturebar;
     QTimer *timer;
 
     QString input;

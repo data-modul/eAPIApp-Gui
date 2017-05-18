@@ -43,6 +43,7 @@ public slots:
 private:
     unsigned int gpioID;
     unsigned int keepGpioID;
+    bool gpiodetect;
     uint32_t mask;
     uint32_t direction;
     uint32_t level;
