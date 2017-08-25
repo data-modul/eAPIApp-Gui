@@ -13,5 +13,6 @@
   <file>question.png</file>
   <file>Storage.png</file>
   <file>i2c.png</file>
+  <file>PWM-Icon.png</file>
 </qresource>
 </RCC>

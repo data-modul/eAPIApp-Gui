@@ -13,6 +13,7 @@ void myTabWidget::myTabWidgetInitialize(void)
     mygpio = new gpio();
     mystorage = new storage();
     myi2c = new i2c();
+    mypwm = new pwm();
 
     addTab(myboardInfo,"Board Information");
     setTabIcon(BOARDINFOTAB,QIcon(":/Logo.jpg"));
@@ -31,6 +32,9 @@ void myTabWidget::myTabWidgetInitialize(void)
 
     addTab(myi2c,"I2C");
     setTabIcon(I2CTAB,QIcon(":/i2c.png"));
+
+    addTab(mypwm,"PWM");
+    setTabIcon(PWMTAB,QIcon(":/PWM-Icon.png"));
 
 }
 void myTabWidget::currentChangedSlot(int index)

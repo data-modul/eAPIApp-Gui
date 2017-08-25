@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     gpio.cpp \
     storage.cpp \
     i2c.cpp \
-    temperatureBar.cpp
+    temperatureBar.cpp \
+    pwm.cpp
 
 HEADERS  += mainwindow.h \
     boardinfo.h \
@@ -30,7 +31,8 @@ HEADERS  += mainwindow.h \
     gpio.h \
     storage.h \
     i2c.h \
-    temperatureBar.h
+    temperatureBar.h \
+    pwm.h
 
 FORMS    += mainwindow.ui
 

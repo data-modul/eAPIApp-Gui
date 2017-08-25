@@ -11,19 +11,15 @@
 #define EAPI_DMO_ID_BOARD_MANUFACTURING_DATE_STR EAPI_CREATE_CUST_ID('D', 'M', 'O', 0)
 #define EAPI_DMO_ID_BOARD_ID_STR EAPI_CREATE_CUST_ID('D', 'M', 'O', 1)
 
-#define BBW6  1
-#define CBS6  2
-#define UNKNOWN 0
+#define ACPIHWMON_PATH "/sys/bus/platform/drivers/dmec-acpi/"
+#define RTM_PATH "/sys/bus/platform/drivers/dmec-rtm/"
 
-#define HWMON_PATH "/sys/class/hwmon/"
-#define HWMON_NAME "nct7802"
 
-extern unsigned int eeprom_bus;
+extern int eeprom_bus;
 extern uint8_t *eeprom_userSpaceBuf;
 
-extern int board_type;
-
-extern char *hwname;
+extern char *acpiHwmonName;
+extern char *rtmname;
 
 extern char err[256];
 
@@ -32,6 +28,26 @@ extern unsigned int gpioLines;
 extern int gpiofd;
 extern int gpioEnabled;
 
+/* PWM  */
+typedef struct _PWM_CONFIG
+{
+	uint8_t   initialized;
+    uint8_t   exported;
+	uint8_t   enabled;
+    uint8_t   mode;
+	uint8_t   alignment;
+	uint8_t   polarity;
+	uint16_t  period;
+	uint16_t  duty;
+    uint32_t  granularity;
+} PWM_HW_CONFIG;
+
+extern PWM_HW_CONFIG  pwmChannel[2];
+extern char *pathPwmChannel0;
+extern char *pathPwmChannel1;
+extern char *pathPwmConfigure;
+extern char *pwmchip;
+/* end PWM */
 
 
 /*

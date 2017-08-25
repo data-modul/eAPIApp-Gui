@@ -9,6 +9,7 @@
 #include "gpio.h"
 #include "storage.h"
 #include "i2c.h"
+#include "pwm.h"
 
 
 #define BOARDINFOTAB 0
@@ -17,6 +18,7 @@
 #define GPIOTAB 3
 #define STORAGETAB 4
 #define I2CTAB 5
+#define PWMTAB 6
 
 class myTabWidget: public QTabWidget
 {
@@ -34,6 +36,7 @@ private:
     gpio *mygpio;
     storage *mystorage;
     i2c *myi2c;
+    pwm *mypwm;
 };
 
 #endif // MYTABWIDGET_H
