@@ -1,6 +1,6 @@
 
 #include "gpio.h"
-#include <unistd.h>
+
 #include <EApi.h>
 
 const EApiId_t EApiGpioDevices[]={

@@ -13,6 +13,10 @@
 #include <EApi.h>
 #include <EApiExt.h>
 
+#ifndef _MSC_VER
+  #include <unistd.h>
+#endif
+
 class pwm: public QWidget
 {
     Q_OBJECT

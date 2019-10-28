@@ -1,9 +1,11 @@
 #include "i2c.h"
+#ifndef _MSC_VER
 #include <dirent.h>
+#endif
 #include <fcntl.h>
 #include <qdebug.h>
 #include <EApi.h>
-#include  <unistd.h>
+
 #include <QPainter>
 
 
@@ -24,12 +26,7 @@ i2c::i2c(QWidget *parent)
 
     timer = new QTimer(this);
 
-    int tempresult =  find_eeprom();
-    if (tempresult == -1 )
-        base_addr = 0;
-    else
-        base_addr = tempresult;
-
+    base_addr =  find_eeprom();
     readWriteByteRadioButton = new QRadioButton("Read/Write Register");
     readWriteByteRadioButton->setFont(fontvalue);
 
@@ -55,7 +52,7 @@ i2c::i2c(QWidget *parent)
     protocolGroup->setFont(fontlabel);
     protocolGroup->setLayout(protocolLayout);
 
-    if (base_addr == 0) /* no i2c*/
+    if (base_addr == -1) /* no i2c*/
         protocolGroup->setEnabled(false);
     /*************************************************/
 
@@ -65,7 +62,7 @@ i2c::i2c(QWidget *parent)
     i2cID = new QComboBox;
     i2cID->setFont(fontvalue);
 
-    if (base_addr == 0) /* no i2c*/
+    if (base_addr == -1) /* no i2c*/
     {
          i2cIDLabel->setStyleSheet("color : red");
          i2cID->addItem("-");
@@ -105,7 +102,7 @@ i2c::i2c(QWidget *parent)
     deviceGroup->setFont(fontlabel);
     deviceGroup->setLayout(deviceLayout);
 
-    if (base_addr == 0) /* no i2c*/
+    if (base_addr == -1) /* no i2c*/
         deviceGroup->setEnabled(false);
 
     /***********************************************/
@@ -213,7 +210,7 @@ i2c::i2c(QWidget *parent)
     controlGroup->setFont(fontlabel);
     controlGroup->setLayout(parameterGrid);
 
-     if (base_addr == 0) /* no i2c*/
+     if (base_addr == -1) /* no i2c*/
          controlGroup->setEnabled(false);
 
     /******************************************************/
@@ -228,8 +225,9 @@ i2c::i2c(QWidget *parent)
 
 
     unsigned char TmpStrBuf;
-    EApiStatus_t StatusCode;
-    StatusCode=EApiI2CReadTransfer(base_addr, 0x48, EAPI_I2C_ENC_STD_CMD(0),&TmpStrBuf, 1, 1);
+    EApiStatus_t StatusCode = EAPI_STATUS_ERROR;
+    if (base_addr != -1)
+        StatusCode=EApiI2CReadTransfer(base_addr, 0x48, EAPI_I2C_ENC_STD_CMD(0),&TmpStrBuf, 1, 1);
 
     if(EAPI_TEST_SUCCESS(StatusCode))
         temperatureButton->setEnabled(true);
@@ -244,7 +242,7 @@ i2c::i2c(QWidget *parent)
     demoGroup->setFont(fontlabel);
     demoGroup->setLayout(demoGrid);
 
-     if (base_addr == 0) /* no i2c*/
+     if (base_addr == -1) /* no i2c*/
          demoGroup->setEnabled(false);
 
     grid = new QGridLayout;
@@ -587,8 +585,9 @@ void i2c::temperatureClicked()
 void i2c::timeoutTimer()
 {
     unsigned char TmpStrBuf;
-    EApiStatus_t StatusCode;
-    StatusCode=EApiI2CReadTransfer(base_addr, 0x48, EAPI_I2C_ENC_STD_CMD(0),&TmpStrBuf, 1, 1);
+    EApiStatus_t StatusCode = EAPI_STATUS_ERROR;
+    if (base_addr != -1)
+        StatusCode=EApiI2CReadTransfer(base_addr, 0x48, EAPI_I2C_ENC_STD_CMD(0),&TmpStrBuf, 1, 1);
 
     if(EAPI_TEST_SUCCESS(StatusCode))
     {
@@ -619,6 +618,7 @@ void i2c::getInput()
 }
 
 /**************************************/
+#ifndef _MSC_VER
 struct i2c_adap* i2c::more_adapters(struct i2c_adap *adapters, int n)
 {
     struct i2c_adap *new_adapters;
@@ -635,6 +635,7 @@ struct i2c_adap* i2c::more_adapters(struct i2c_adap *adapters, int n)
 
 struct i2c_adap* i2c::gather_i2c_busses(void)
 {
+#ifndef _MSC_VER  
     char s[120];
     struct dirent *de, *dde;
     DIR *dir, *ddir;
@@ -742,6 +743,20 @@ found:
     closedir(dir);
 
 done:
+#else //_MSC_VER
+    struct i2c_adap *adapters;
+    EApiStatus_t StatusCode;
+    uint32_t MaxBlkLen = 0;
+    //EApiId_t i2cBus;
+
+    adapters = (struct i2c_adap*)calloc(1, sizeof(struct i2c_adap));
+    StatusCode = EApiI2CGetBusCap(EAPI_ID_I2C_EXTERNAL, &MaxBlkLen);
+    if(EAPI_TEST_SUCCESS(StatusCode)) {
+        adapters[0].nr = -1;
+        adapters[0].name = strdup(I2C_DMEC);
+    }      
+#endif
+
     return adapters;
 }
 
@@ -753,9 +768,11 @@ void i2c::free_adapters(struct i2c_adap *adapters)
         free(adapters[i].name);
     free(adapters);
 }
+#endif // _MSC_VER
 
 int i2c::find_eeprom(void)
 {
+#ifndef _MSC_VER
     struct i2c_adap *adapters = NULL;
     int count;
     int result = -1;
@@ -774,6 +791,16 @@ int i2c::find_eeprom(void)
     }
     free_adapters(adapters);
     return result;
+#else
+    EApiStatus_t StatusCode;
+    uint32_t MaxBlkLen = 0;
+
+    StatusCode = EApiI2CGetBusCap(EAPI_ID_I2C_EXTERNAL, &MaxBlkLen);
+    if(EAPI_TEST_SUCCESS(StatusCode))
+        return (EAPI_ID_I2C_EXTERNAL);
+
+    return (-1);
+#endif // _MSC_VER
 }
 
 

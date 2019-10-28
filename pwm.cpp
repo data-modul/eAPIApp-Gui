@@ -1,5 +1,5 @@
 #include "pwm.h"
-#include <unistd.h>
+
 #include <QStandardItemModel>
 
 static const QStandardItemModel* model;
@@ -23,7 +23,7 @@ pwm::pwm(QWidget *parent)
     fontvalue.setBold(false);
     fontvalue.setPointSize(11);
 
-    EApiStatus_t StatusCode;
+    //EApiStatus_t StatusCode;
     QStringList list;
 
     pwmch0 = new QRadioButton("PWM Channel0");

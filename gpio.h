@@ -9,6 +9,12 @@
 #include <QPushButton>
 #include <QTimer>
 
+#ifdef _MSC_VER
+  #include <stdint.h>  
+#else
+  #include <unistd.h>
+#endif
+
 class gpio: public QWidget
 {
     Q_OBJECT

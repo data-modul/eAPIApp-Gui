@@ -34,6 +34,11 @@
  *</KHeader>
  */
 
+#ifdef _MSC_VER
+	#include <EApiOs.h>
+	#include <stdint.h>
+#endif
+
 #ifndef _EAPI_H_        
 #define _EAPI_H_
 

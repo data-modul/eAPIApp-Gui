@@ -15,6 +15,13 @@
 #include <QCheckBox>
 #include <QPlainTextEdit>
 
+#ifndef _MSC_VER
+  #include <unistd.h>
+#else
+  #include <stdint.h>
+  #include <EApiOsNTC.h>
+#endif
+
 #include "temperatureBar.h"
 
 struct i2c_adap {

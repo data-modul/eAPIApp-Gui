@@ -10,6 +10,9 @@
 #include <QFormLayout>
 #include <QTextEdit>
 
+#ifdef _MSC_VER
+  #include <stdint.h>  
+#endif
 
 class storage: public QWidget
 {
