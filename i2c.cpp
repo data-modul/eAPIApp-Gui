@@ -26,7 +26,6 @@ i2c::i2c(QWidget *parent)
 
     timer = new QTimer(this);
 
-    base_addr =  find_eeprom();
     readWriteByteRadioButton = new QRadioButton("Read/Write Register");
     readWriteByteRadioButton->setFont(fontvalue);
 
@@ -52,8 +51,6 @@ i2c::i2c(QWidget *parent)
     protocolGroup->setFont(fontlabel);
     protocolGroup->setLayout(protocolLayout);
 
-    if (base_addr == -1) /* no i2c*/
-        protocolGroup->setEnabled(false);
     /*************************************************/
 
     i2cIDLabel = new QLabel("I2C Select:");
@@ -61,20 +58,16 @@ i2c::i2c(QWidget *parent)
 
     i2cID = new QComboBox;
     i2cID->setFont(fontvalue);
-
-    if (base_addr == -1) /* no i2c*/
+    
+    base_addr = uint32_t(add_i2c_busses(i2cID));
+    if (base_addr == uint32_t(-1))
+      protocolGroup->setEnabled(false);
+    if (base_addr == uint32_t(-1)) /* no i2c*/
     {
          i2cIDLabel->setStyleSheet("color : red");
          i2cID->addItem("-");
     }
-    else
-    {
-        i2cID->addItem(QString::number(base_addr));
-        i2cID->addItem(QString::number(base_addr+1));
-        i2cID->addItem(QString::number(base_addr+2));
-    }
 
-    i2cBus = base_addr;
     connect(i2cID , SIGNAL(currentIndexChanged(int)),this,SLOT(handleI2CselectionChanged(int)));
 
     slaveLabel = new QLabel("Slave Address(Hex, ex. A5):");
@@ -102,7 +95,7 @@ i2c::i2c(QWidget *parent)
     deviceGroup->setFont(fontlabel);
     deviceGroup->setLayout(deviceLayout);
 
-    if (base_addr == -1) /* no i2c*/
+    if (base_addr == uint32_t(-1)) /* no i2c*/
         deviceGroup->setEnabled(false);
 
     /***********************************************/
@@ -210,7 +203,7 @@ i2c::i2c(QWidget *parent)
     controlGroup->setFont(fontlabel);
     controlGroup->setLayout(parameterGrid);
 
-     if (base_addr == -1) /* no i2c*/
+     if (base_addr == uint32_t(-1)) /* no i2c*/
          controlGroup->setEnabled(false);
 
     /******************************************************/
@@ -226,7 +219,7 @@ i2c::i2c(QWidget *parent)
 
     unsigned char TmpStrBuf;
     EApiStatus_t StatusCode = EAPI_STATUS_ERROR;
-    if (base_addr != -1)
+    if (base_addr != uint32_t(-1))
         StatusCode=EApiI2CReadTransfer(base_addr, 0x48, EAPI_I2C_ENC_STD_CMD(0),&TmpStrBuf, 1, 1);
 
     if(EAPI_TEST_SUCCESS(StatusCode))
@@ -242,7 +235,7 @@ i2c::i2c(QWidget *parent)
     demoGroup->setFont(fontlabel);
     demoGroup->setLayout(demoGrid);
 
-     if (base_addr == -1) /* no i2c*/
+     if (base_addr == (uint32_t(-1)) /* no i2c*/
          demoGroup->setEnabled(false);
 
     grid = new QGridLayout;
@@ -290,7 +283,7 @@ void i2c::timingSelected(bool checked)
 }
 void i2c::handleI2CselectionChanged(int index)
 {
-    i2cBus = i2cID->itemText(index).toInt();
+    i2cBus = i2cID->itemData(index).toInt();
 }
 void i2c::slaveChanged(QString text)
 {
@@ -635,7 +628,6 @@ struct i2c_adap* i2c::more_adapters(struct i2c_adap *adapters, int n)
 
 struct i2c_adap* i2c::gather_i2c_busses(void)
 {
-#ifndef _MSC_VER  
     char s[120];
     struct dirent *de, *dde;
     DIR *dir, *ddir;
@@ -743,20 +735,6 @@ found:
     closedir(dir);
 
 done:
-#else //_MSC_VER
-    struct i2c_adap *adapters;
-    EApiStatus_t StatusCode;
-    uint32_t MaxBlkLen = 0;
-    //EApiId_t i2cBus;
-
-    adapters = (struct i2c_adap*)calloc(1, sizeof(struct i2c_adap));
-    StatusCode = EApiI2CGetBusCap(EAPI_ID_I2C_EXTERNAL, &MaxBlkLen);
-    if(EAPI_TEST_SUCCESS(StatusCode)) {
-        adapters[0].nr = -1;
-        adapters[0].name = strdup(I2C_DMEC);
-    }      
-#endif
-
     return adapters;
 }
 
@@ -770,37 +748,73 @@ void i2c::free_adapters(struct i2c_adap *adapters)
 }
 #endif // _MSC_VER
 
-int i2c::find_eeprom(void)
+int i2c::add_i2c_busses(QComboBox *i2cBusComboBox)
 {
 #ifndef _MSC_VER
     struct i2c_adap *adapters = NULL;
-    int count;
     int result = -1;
+    int i;
+    int mux_channel;
+    char mux[NAME_MAX] = "\0";
+
     adapters = gather_i2c_busses();
     if (adapters == NULL)
     {
         fprintf(stderr, "Error: Out of memory!\n");
-        return result;
+        return (result);
     }
-    for (count = 0; adapters[count].name; count++) {
-        if (!strncmp(adapters[count].name, I2C_DMEC,8))
+
+    for (i = 0; adapters[i].name; i++) {
+        if (!strncmp(adapters[i].name, I2C_DMEC,8))
         {
-            result = adapters[count].nr +1;
+            // found DMEC base instance now get all mux busses and add them to the Combobox
+            sprintf(mux, "i2c-%d-mux", adapters[i].nr);
             break;
         }
     }
+
+    if (mux[0] != 0) {
+        char c[NAME_MAX] = "\0";
+        int index = 0;
+        for (i = 0; adapters[i].name; i++) {
+            if (!strncmp(adapters[i].name, mux,strlen(mux)))
+            {
+                // found DMEC mux bus, get channel number
+                if (sscanf(adapters[i].name, MUX_CHANNEL, c, &mux_channel)) {
+                    i2cBusComboBox->addItem(QString::number(adapters[i].nr) + " (CH" + QString::number(mux_channel) + ")");
+                    i2cBusComboBox->setItemData(index++, adapters[i].nr);
+                    if (mux_channel == 0) {
+                        result = adapters[i].nr;
+                    }
+                }
+            }
+        }
+
+    }
+
     free_adapters(adapters);
-    return result;
-#else
+    return (result);
+#else // _MSC_VER
     EApiStatus_t StatusCode;
     uint32_t MaxBlkLen = 0;
+    int result = -1;
 
     StatusCode = EApiI2CGetBusCap(EAPI_ID_I2C_EXTERNAL, &MaxBlkLen);
-    if(EAPI_TEST_SUCCESS(StatusCode))
-        return (EAPI_ID_I2C_EXTERNAL);
+    if(EAPI_TEST_SUCCESS(StatusCode)) {
+        i2cBusComboBox->addItem(QString::number(EAPI_ID_I2C_EXTERNAL));
+        result = EAPI_ID_I2C_EXTERNAL;
+    }
 
-    return (-1);
+    StatusCode = EApiI2CGetBusCap(EAPI_ID_I2C_LVDS_1, &MaxBlkLen);
+    if(EAPI_TEST_SUCCESS(StatusCode))
+        i2cBusComboBox->addItem(QString::number(EAPI_ID_I2C_LVDS_1));
+
+    StatusCode = EApiI2CGetBusCap(EAPI_ID_I2C_LVDS_2, &MaxBlkLen);
+    if(EAPI_TEST_SUCCESS(StatusCode))
+        i2cBusComboBox->addItem(QString::number(EAPI_ID_I2C_LVDS_2));
+    return (result);
 #endif // _MSC_VER
 }
+
 
 

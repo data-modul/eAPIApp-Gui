@@ -30,7 +30,8 @@ struct i2c_adap {
 };
 
 #define BUNCH 8
-#define I2C_DMEC    "i2c-dmec"
+#define I2C_DMEC        "i2c-dmec"
+#define MUX_CHANNEL     "%s (chan_id %d"
 
 class i2c: public QWidget
 {
@@ -41,7 +42,7 @@ public:
     void free_adapters(struct i2c_adap *adapters);
     struct i2c_adap* gather_i2c_busses(void);
     struct i2c_adap* more_adapters(struct i2c_adap *adapters, int n);
-
+    int add_i2c_busses(QComboBox *i2cBusses);
 
 public slots:
     void readClicked();
